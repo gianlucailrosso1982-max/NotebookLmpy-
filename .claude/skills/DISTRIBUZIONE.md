@@ -40,6 +40,7 @@ senza controllo del browser e con rete variabile.
 | `ultra-mode` | ✅ | ✅ | Pura istruzione comportamentale |
 | `meta-prompt` | ✅ | ✅ | Pura istruzione |
 | `persuasione-scientifica-strategica` | ✅ | ✅ | Usa la descrizione ridotta (≤1024) |
+| `scrittura-di-valore` | ✅ | ✅ | Orchestratore: richiede che le tre skill che fonde (fonti, manuali, persuasione) siano caricate sulla stessa superficie. `description` già ≤1024 |
 | `manuali-memorabili` | ✅ | ✅ | Genera PDF via code execution |
 | `fonti-scientifiche-validate` | ⚠️ | ✅ | Su claude.ai serve la ricerca web abilitata |
 | `gestione-tono-genere-scrittura` | ⚠️ | ✅ | Legge/scrive `profilo-stilistico.md`: su web niente persistenza tra sessioni → ricarica il profilo ogni volta |
