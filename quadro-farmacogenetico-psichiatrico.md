@@ -18,6 +18,36 @@
 
 ---
 
+## Addendum (16/08/2026) — La terapia in atto alla prova del profilo genetico
+
+**Dati anamnestici forniti dal paziente:** fumatore forte (40 sigarette/die); terapia attuale: litio (litiemia 0,7 mmol/L), valproato (Depakin Chrono 1000 mg), lurasidone 148 mg, bupropione (Wellbutrin) 300 mg, cariprazina 1,5 mg, quetiapina 100 mg, zolpidem 10 mg.
+
+### Verdetto d'insieme
+
+**La terapia attuale è notevolmente coerente con il profilo genetico** — che sia frutto dei referti o di buon lavoro clinico empirico, il regime evita *completamente* i due assi metabolici alterati (nessun farmaco passa in modo rilevante da CYP2D6 lento né da CYP2C19 ultrarapido) e si appoggia su vie integre: escrezione renale (litio), glucuronidazione (valproato) e CYP3A4 normale (lurasidone, cariprazina, quetiapina, zolpidem). L'unico disallineamento parziale è il bupropione (CYP2B6 lento). E — dato non ovvio — **il regime attuale è anche "a prova di fumo"**: nessuno dei sette farmaci è substrato rilevante del CYP1A2, l'unico enzima che le 40 sigarette al giorno stanno inducendo al massimo.
+
+### Verifica farmaco per farmaco
+
+| Farmaco e dose | Via metabolica | Compatibilità genetica | Note operative |
+|---|---|---|---|
+| **Litio** — litiemia 0,7 | Renale, nessun CYP | 🟢 Ottimale. Litiemia esattamente a target di mantenimento (0,6–0,8); marcatore CACNG2 favorevole (certezza BASSA) | Il fumo non interferisce. Mantenere i controlli periodici di funzione renale, tiroide e calcemia; attenzione a FANS, ACE-inibitori e diuretici tiazidici che alzano la litiemia |
+| **Valproato** 1000 mg | UGT + β-ossidazione; CYP2C9 solo marginale | 🟢 «Standard» nel pannello; il CYP2C9 intermedio tocca una via minore, irrilevante alla pratica | Fumo ininfluente. Di prassi: emocromo, transaminasi, ammoniemia se sintomi. Da ricordare: se mai si aggiungesse lamotrigina, il valproato ne raddoppia i livelli (titolazione dedicata) |
+| **Lurasidone** 148 mg (dose massima) | CYP3A4 | 🟢 CYP3A4 normale nel paziente; «standard» nel referto | **Va assunto con cibo (≥350 kcal)**, altrimenti l'assorbimento crolla — a dose massima questo dettaglio vale quanto la genetica. Evitare pompelmo, claritromicina, azoli, iperico (inibitori/induttori CYP3A4). Akathisia possibile, additiva con cariprazina (vedi sotto) |
+| **Cariprazina** 1,5 mg | CYP3A4 (metabolita attivo DDCAR) | 🟢 CYP3A4 normale (farmaco non incluso nel pannello 2017) | Il metabolita attivo ha emivita di 1–3 settimane: effetti (akathisia inclusa) possono comparire o persistere settimane dopo un cambio di dose. Stesse cautele CYP3A4 del lurasidone |
+| **Bupropione** 300 mg | CYP2B6 | 🟡 Unico disallineamento: CYP2B6 \*6/\*6 → conversione ridotta a idrossibupropione (il metabolita più attivo sulla noradrenalina); significato clinico incerto, il referto suggerisce «possibile regolazione della dose» | Nel bipolare I è accettabile solo perché ampiamente coperto da stabilizzatori — qui la copertura c'è (litio + valproato + 3 atipici). È un potente inibitore del CYP2D6: irrilevante per il paziente stesso (già metabolizzatore lento) e nessun co-farmaco attuale passa da lì ✅. Nota: è lo stesso principio attivo usato per la cessazione tabagica — tema da esplorare col curante |
+| **Quetiapina** 100 mg | CYP3A4 | 🟢 CYP3A4 normale; «standard» nel referto | Alla dose di 100 mg il ruolo è verosimilmente sedativo/ansiolitico: sommata a zolpidem fa carico sedativo additivo. Monitoraggio metabolico di prassi |
+| **Zolpidem** 10 mg | CYP3A4 (con contributi minori) | 🟢 «Standard» nel referto | Additività sedativa con quetiapina serale; valutare periodicamente la necessità (uso cronico degli Z-drug da rivalutare di prassi) |
+
+### I tre punti da portare all'attenzione del curante
+
+1. **Tripla terapia antipsicotica atipica simultanea** (lurasidone a dose massima + cariprazina + quetiapina). Non è di per sé un errore — le combinazioni hanno razionali legittimi (lurasidone per la depressione bipolare, cariprazina D3-preferente, quetiapina come sedativo) — ma la sovrapposizione farmacodinamica su D2 è triplice e il rischio di **akathisia/sintomi extrapiramidali è additivo**, proprio il fronte su cui il test segnala vulnerabilità genetica (algoritmo proprietario, certezza MOLTO BASSA — ma qui il segnale genetico e la farmacologia puntano nella stessa direzione). Se compare irrequietezza motoria, gambe che «non stanno ferme», impossibilità di stare seduto: non è ansia, va riferita subito. Domanda legittima per il curante: la quetiapina 100 ha ancora un ruolo che lo zolpidem non copre già?
+2. **Il fumo, paradossalmente, oggi non tocca la terapia — ma è la variabile nascosta del futuro.** Con CYP1A2 \*1F/\*1F e 40 sigarette/die l'induzione è massimale: se mai entrassero in gioco olanzapina o clozapina servirebbero dosi molto superiori allo standard, e viceversa una cessazione durante quei farmaci ne farebbe salire i livelli anche del 50-70%. **Con il regime attuale, invece, smettere di fumare non destabilizzerebbe nessun farmaco: è una finestra ideale per la cessazione** — e il paziente assume già bupropione, lo stesso principio attivo impiegato a questo scopo. 40 sigarette/die restano, per un uomo di 43 anni in terapia con farmaci a carico metabolico, il singolo fattore di rischio modificabile più pesante dell'intero quadro.
+3. **Lurasidone a dose piena e assunzione con cibo:** a 148 mg, la differenza tra assumerlo a stomaco pieno o vuoto equivale a una riduzione di dose massiccia. Verificare che l'assunzione avvenga sistematicamente con un pasto vero.
+
+*(Le valutazioni di questo addendum incrociano i referti del paziente con le schede tecniche dei farmaci e le linee guida già citate; restano informative e non prescrittive.)*
+
+---
+
 ## 2. Materiale analizzato e metodo
 
 | Documento | Fonte | Data | Contenuto |
@@ -175,7 +205,7 @@ La componente CYP2D6 di queste raccomandazioni è coerente con le linee guida in
 
 Il genotipo è il punto di partenza; queste condizioni lo *sovrascrivono*:
 
-- **Fumo di tabacco** → induce CYP1A2: nel paziente \*1F/\*1F l'effetto è amplificato → olanzapina, clozapina e agomelatina perdono efficacia; smettere di fumare durante una terapia con questi farmaci ne *aumenta* i livelli (va segnalato al medico). **Il singolo dato anamnestico più importante da chiarire.**
+- **Fumo di tabacco — dato confermato: 40 sigarette/die** → induzione massimale del CYP1A2, amplificata dal genotipo \*1F/\*1F: olanzapina, clozapina e agomelatina sarebbero fortemente sottodosate a dosi standard; una cessazione durante quei farmaci ne *aumenterebbe* i livelli. La terapia attuale non contiene substrati CYP1A2 rilevanti (vedi Addendum): oggi il fumo non interferisce con i farmaci, ma resta il maggior fattore di rischio modificabile del quadro complessivo.
 - **Inibitori CYP2C19** (omeprazolo, esomeprazolo, fluvoxamina, fluconazolo) → possono «normalizzare» o addirittura invertire il fenotipo ultrarapido del paziente: un banale gastroprotettore cambia la farmacologia di citalopram/escitalopram/sertralina.
 - **Inibitori CYP3A4** (claritromicina, azoli, succo di pompelmo) e **induttori** (carbamazepina, fenitoina, iperico) → alterano quetiapina e lurasidone; l'iperico da automedicazione è un rischio tipico e sottovalutato.
 - **Inibitori CYP2D6** (bupropione, fluoxetina, paroxetina, duloxetina): nel paziente sono meno rilevanti del solito — è già metabolizzatore lento «di suo» — ma le combinazioni restano da valutare.
@@ -190,19 +220,22 @@ Il genotipo è il punto di partenza; queste condizioni lo *sovrascrivono*:
 3. **L'algoritmo EPS a 4 geni è proprietario e non validato esternamente**: va trattato come un'ipotesi prudenziale, non come un dato.
 4. **Il pannello 2017 non copre:** HLA (carbamazepina), UGT (valproato, lamotrigina), CYP3A5, trasportatori renali del litio, e ovviamente i marcatori emersi dopo il 2017. Un eventuale aggiornamento del test con un pannello attuale colmerebbe queste lacune.
 5. **Genetica e disturbo narcisistico:** non esistono marcatori validati, punto. Ogni affermazione contraria sarebbe sovra-interpretazione.
-6. **Stato di fumatore, funzione renale/tiroidea attuale, terapie concomitanti**: dati anamnestici indispensabili per attivare il quadro, non presenti nei documenti analizzati.
+6. **Funzione renale, tiroidea e parametri metabolici attuali**: non presenti nei documenti analizzati — indispensabili per la sorveglianza del litio (litiemia 0,7 confermata a target) e del carico metabolico di valproato + antipsicotici. Stato di fumatore e terapia concomitante sono stati invece forniti e integrati nell'Addendum.
 
 ---
 
 ## 9. Domande concrete da portare allo psichiatra
 
-1. Il litio è già stato provato in modo adeguato (≥6 mesi, litiemia 0,6–0,8 mmol/L)? Se no, il profilo converge nel proporlo come prima scelta di mantenimento.
-2. Se serve un antipsicotico: quetiapina o lurasidone sono compatibili col quadro? Se si usa aripiprazolo, la dose rispetta il tetto per metabolizzatori lenti?
-3. Il paziente fuma? (Cambia dosi di olanzapina/clozapina/agomelatina e la lettura del CYP1A2.)
-4. Assume gastroprotettori (omeprazolo/esomeprazolo)? (Interferiscono col fenotipo CYP2C19.)
-5. Se in futuro servisse un antidepressivo: la desvenlafaxina è l'opzione col miglior razionale farmacogenetico; triciclici da evitare.
-6. Ha senso aggiornare il test 2017 con un pannello attuale che includa HLA e UGT?
-7. Per la componente narcisistica covert: quale percorso psicoterapeutico strutturato affiancare alla farmacoterapia?
+*(aggiornate dopo l'acquisizione della terapia in atto — vedi Addendum)*
+
+1. **Litio: già in atto e a target (0,7 mmol/L)** ✅ — la domanda diventa: i controlli periodici di funzione renale, TSH e calcemia sono aggiornati?
+2. **Tripla terapia antipsicotica** (lurasidone 148 + cariprazina 1,5 + quetiapina 100): qual è il ruolo attuale di ciascuna? La quetiapina 100 serale ha ancora una funzione che lo zolpidem non copre? C'è margine di semplificazione, visto il rischio additivo di akathisia su un profilo genetico già segnalato per gli EPS?
+3. **Il lurasidone a 148 mg viene assunto sistematicamente con un pasto ≥350 kcal?** (A stomaco vuoto l'assorbimento si dimezza: è il fattore modificabile più banale e più pesante del regime.)
+4. **Bupropione 300 con CYP2B6 lento**: la risposta clinica attuale giustifica la dose? E può fare da ponte per un tentativo strutturato di cessazione tabagica, ora che il regime è «a prova di fumo»?
+5. Assume o assumerà gastroprotettori (omeprazolo/esomeprazolo)? (Interferiscono col fenotipo CYP2C19 ultrarapido — oggi irrilevante, ma da ricordare a ogni nuova prescrizione.)
+6. Se in futuro servisse cambiare antidepressivo: la desvenlafaxina è l'opzione col miglior razionale farmacogenetico; triciclici da evitare; citalopram/escitalopram probabilmente sottodosati.
+7. Ha senso aggiornare il test 2017 con un pannello attuale che includa HLA e UGT?
+8. Per la componente narcisistica covert: quale percorso psicoterapeutico strutturato affiancare alla farmacoterapia?
 
 ---
 
