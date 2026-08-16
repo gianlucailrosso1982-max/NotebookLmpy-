@@ -48,6 +48,39 @@
 
 ---
 
+## Addendum 2 (16/08/2026) — Esami ematochimici del 03/11/2025
+
+**Fonte:** Studio di Analisi Prof. G. Passantino, Bari — prelievo 03/11/2025 ore 08:08. Il referto chiude la lacuna di sorveglianza segnalata al §8: la fotografia di laboratorio della terapia in corso è **complessivamente rassicurante**.
+
+### I due dosaggi plasmatici — la terapia è dove deve stare
+
+| Farmaco | Valore | Range terapeutico | Lettura |
+|---|---|---|---|
+| **Litio** | **0,73 mEq/L** | 0,6–1,2 (tossicità >1,5) | 🟢 Esattamente nella fascia di mantenimento ottimale (0,6–0,8). Conferma il valore riferito dal paziente, l'aderenza e la stabilità del dosaggio |
+| **Acido valproico** | **67,4 µg/ml** | 50–100 | 🟢 Centro-range: il Depakin Chrono 1000 produce un'esposizione adeguata, né sub- né sovra-terapeutica |
+
+Due farmaci a finestra terapeutica stretta, entrambi centrati: è il riscontro oggettivo che il monitoraggio terapeutico funziona — ed è la strategia giusta per un profilo genetico come questo, dove i livelli plasmatici contano più delle dosi nominali.
+
+### Sorveglianza d'organo sotto litio e valproato
+
+| Ambito | Valori | Lettura |
+|---|---|---|
+| **Tiroide** (litio) | TSH 2,88 µIU/ml · FT4 1,32 ng/dL · FT3 3,44 pg/ml | 🟢 Tutto in range: nessun segno di ipotiroidismo da litio |
+| **Calcio** (litio) | 9,5 mg/dl | 🟢 Normale: nessun segno di iperparatiroidismo da litio |
+| **Rene** (litio) | Creatinina **1,19 mg/dl** (ref. 0,7–1,3) · Na 144 · K 4,6 · Mg 2,3 | 🟡 In range ma nella **fascia alta**: per un uomo di 43 anni corrisponde a un filtrato stimato (CKD-EPI) attorno a **75–80 ml/min/1,73 m²** — riduzione lieve, di per sé non allarmante e compatibile con la terapia, ma sotto litio è il parametro da seguire **in trend**: una creatinina che salisse costantemente nei prossimi controlli andrebbe discussa subito col curante. Elettroliti perfetti |
+| **Fegato** (valproato) | GOT 26 · GPT 23 · γGT 17 U/l | 🟢 Transaminasi e γGT pienamente normali sotto valproato: dato molto buono |
+| **Emocromo** (valproato/litio) | Piastrine 302.000 · Hb 14,9 · GB 10.010 | 🟢 Piastrine ottime (il valproato può ridurle: qui no). Globuli bianchi al limite superiore ma in range — atteso: sia il litio sia il fumo pesante li alzano; formula normale, nessun segnale d'allarme |
+| **Metabolismo** (antipsicotici) | Glicemia 92 · LDL 98 · Trigliceridi 147 · **HDL 47** · indice di rischio 3,8 | 🟡 Glicemia e LDL buoni sotto tripla terapia atipica. **HDL al minimo del range** e trigliceridi medio-alti: è il pattern tipico del fumatore — un motivo *metabolico* in più, oltre a quello farmacologico, per la cessazione tabagica (Addendum 1) |
+| Urinocoltura | Negativa | 🟢 |
+
+### Che cosa aggiunge questo referto al quadro
+
+1. **La strategia "genetica → farmaci a monitoraggio oggettivo" sta funzionando**: litio e valproato centrati, organi bersaglio integri, metabolismo sotto controllo nonostante tre antipsicotici. Non c'è nulla, in questi esami, che richieda modifiche urgenti.
+2. **Due parametri da seguire in trend, non da trattare oggi:** la creatinina in fascia alta (controllo con eGFR calcolato, idealmente ogni 6 mesi sotto litio; utile aggiungere un esame urine con microalbuminuria al prossimo giro) e l'assetto lipidico HDL/trigliceridi (che migliorerebbe con la cessazione dal fumo più che con qualunque farmaco).
+3. **Esami non presenti nel pannello**, da considerare al prossimo controllo per completezza: HbA1c (sotto antipsicotici atipici la sola glicemia a digiuno può sottostimare), azotemia, ed eventualmente ECG con QTc (buona pratica con antipsicotici multipli — da valutare col curante).
+
+---
+
 ## 2. Materiale analizzato e metodo
 
 | Documento | Fonte | Data | Contenuto |
@@ -220,7 +253,7 @@ Il genotipo è il punto di partenza; queste condizioni lo *sovrascrivono*:
 3. **L'algoritmo EPS a 4 geni è proprietario e non validato esternamente**: va trattato come un'ipotesi prudenziale, non come un dato.
 4. **Il pannello 2017 non copre:** HLA (carbamazepina), UGT (valproato, lamotrigina), CYP3A5, trasportatori renali del litio, e ovviamente i marcatori emersi dopo il 2017. Un eventuale aggiornamento del test con un pannello attuale colmerebbe queste lacune.
 5. **Genetica e disturbo narcisistico:** non esistono marcatori validati, punto. Ogni affermazione contraria sarebbe sovra-interpretazione.
-6. **Funzione renale, tiroidea e parametri metabolici attuali**: non presenti nei documenti analizzati — indispensabili per la sorveglianza del litio (litiemia 0,7 confermata a target) e del carico metabolico di valproato + antipsicotici. Stato di fumatore e terapia concomitante sono stati invece forniti e integrati nell'Addendum.
+6. ~~Funzione renale, tiroidea e parametri metabolici attuali~~ → **forniti e integrati (Addendum 2, esami 03/11/2025)**: litiemia 0,73 e valproatemia 67,4 a target; tiroide, calcio, fegato ed emocromo normali; creatinina in fascia alta (da seguire in trend) e HDL al minimo. Restano da acquisire in futuro: HbA1c, esame urine con microalbuminuria, ECG/QTc.
 
 ---
 
@@ -228,7 +261,7 @@ Il genotipo è il punto di partenza; queste condizioni lo *sovrascrivono*:
 
 *(aggiornate dopo l'acquisizione della terapia in atto — vedi Addendum)*
 
-1. **Litio: già in atto e a target (0,7 mmol/L)** ✅ — la domanda diventa: i controlli periodici di funzione renale, TSH e calcemia sono aggiornati?
+1. **Litio: in atto, a target (0,73 mEq/L) e con sorveglianza d'organo normale** (esami 11/2025: TSH, calcio, elettroliti ok) ✅ — la domanda diventa: cadenza dei prossimi controlli e monitoraggio del *trend* della creatinina (1,19, fascia alta → eGFR stimato ~75–80)? Utile aggiungere microalbuminuria e HbA1c al prossimo prelievo?
 2. **Tripla terapia antipsicotica** (lurasidone 148 + cariprazina 1,5 + quetiapina 100): qual è il ruolo attuale di ciascuna? La quetiapina 100 serale ha ancora una funzione che lo zolpidem non copre? C'è margine di semplificazione, visto il rischio additivo di akathisia su un profilo genetico già segnalato per gli EPS?
 3. **Il lurasidone a 148 mg viene assunto sistematicamente con un pasto ≥350 kcal?** (A stomaco vuoto l'assorbimento si dimezza: è il fattore modificabile più banale e più pesante del regime.)
 4. **Bupropione 300 con CYP2B6 lento**: la risposta clinica attuale giustifica la dose? E può fare da ponte per un tentativo strutturato di cessazione tabagica, ora che il regime è «a prova di fumo»?
