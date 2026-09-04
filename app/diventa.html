@@ -1,0 +1,807 @@
+<title>Diventa</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+  :root {
+    --ground: #F7F5F1;
+    --surface: #FFFFFF;
+    --surface-2: #EFEBE3;
+    --ink: #241F1C;
+    --ink-2: #6B625B;
+    --ink-3: #998F86;
+    --line: #E2DCD2;
+    --accent: #B3491F;        /* ember: l'azione, il voto */
+    --accent-ink: #FFFFFF;
+    --accent-soft: rgba(179,73,31,.10);
+    --gold: #8F6C1E;
+    --gold-soft: rgba(143,108,30,.12);
+    --good: #3E7C4F;
+    --good-soft: rgba(62,124,79,.12);
+    --cell-off: #E7E1D7;
+    --shadow: 0 1px 3px rgba(36,31,28,.08);
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #181310;
+      --surface: #221C17;
+      --surface-2: #2C2620;
+      --ink: #EDE6DE;
+      --ink-2: #A99E93;
+      --ink-3: #7C7268;
+      --line: #383028;
+      --accent: #D96A3F;
+      --accent-ink: #1B120C;
+      --accent-soft: rgba(217,106,63,.14);
+      --gold: #C79A3C;
+      --gold-soft: rgba(199,154,60,.15);
+      --good: #4FA56A;
+      --good-soft: rgba(79,165,106,.16);
+      --cell-off: #322B23;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #181310;
+    --surface: #221C17;
+    --surface-2: #2C2620;
+    --ink: #EDE6DE;
+    --ink-2: #A99E93;
+    --ink-3: #7C7268;
+    --line: #383028;
+    --accent: #D96A3F;
+    --accent-ink: #1B120C;
+    --accent-soft: rgba(217,106,63,.14);
+    --gold: #C79A3C;
+    --gold-soft: rgba(199,154,60,.15);
+    --good: #4FA56A;
+    --good-soft: rgba(79,165,106,.16);
+    --cell-off: #322B23;
+    --shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-bottom: 84px;
+  }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Segoe UI", sans-serif; margin: 0; text-wrap: balance; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+
+  .wrap { max-width: 660px; margin: 0 auto; padding: 0 16px; }
+
+  header.top { padding: 20px 0 12px; }
+  .brandline { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .brand { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -.02em; }
+  .brand .dot { color: var(--accent); }
+  .hdr-right { display: flex; align-items: center; gap: 8px; }
+  .votes-chip {
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 999px; padding: 4px 13px; font-weight: 700; font-size: 14px;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .sos-btn {
+    border: 1px solid var(--line); background: var(--surface);
+    border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 700; color: var(--ink-2);
+  }
+  .today-date { color: var(--ink-2); font-size: 15px; margin-top: 2px; }
+
+  main section[data-view] { display: grid; gap: 14px; padding: 4px 0 24px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px;
+  }
+  .card > h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .muted { color: var(--ink-2); font-size: 15px; }
+  .small { color: var(--ink-3); font-size: 13.5px; }
+
+  /* Manifesto identitario in cima a Oggi */
+  .manifesto {
+    background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+    border-radius: var(--radius); padding: 16px 18px;
+  }
+  .manifesto .lead { font-size: 13px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); }
+  .manifesto .frase { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 21px; line-height: 1.3; margin-top: 4px; }
+  .manifesto button { margin-top: 8px; border: 0; background: none; color: var(--accent); font-weight: 700; padding: 0; }
+
+  /* Card abitudine del giorno */
+  .habit-today {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 15px 16px; width: 100%; text-align: left;
+    transition: background .15s;
+  }
+  .habit-today .tick {
+    flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+    border: 2.5px solid var(--line); display: grid; place-items: center;
+    transition: background .15s, border-color .15s;
+  }
+  .habit-today .tick svg { width: 18px; height: 18px; opacity: 0; }
+  .habit-today.done { background: var(--accent-soft); border-color: var(--accent); }
+  .habit-today.done .tick { background: var(--accent); border-color: var(--accent); }
+  .habit-today.done .tick svg { opacity: 1; }
+  .habit-today .h-name { font-weight: 700; font-size: 17px; }
+  .habit-today.done .h-name { color: var(--accent); }
+  .habit-today .h-cue { color: var(--ink-2); font-size: 14px; margin-top: 1px; }
+  .habit-today .h-vote { color: var(--ink-3); font-size: 13px; margin-top: 2px; font-style: italic; }
+
+  .banner {
+    border-radius: var(--radius); padding: 13px 16px; font-size: 15px;
+    border: 1px solid var(--gold); background: var(--gold-soft);
+  }
+  .banner strong { display: block; }
+  .banner.win { border-color: var(--good); background: var(--good-soft); }
+
+  .btn-primary {
+    width: 100%; margin-top: 16px; border: 0; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; font-size: 17px; padding: 13px 0;
+  }
+  .btn-secondary {
+    border: 1px solid var(--line); background: var(--surface-2);
+    border-radius: 8px; font-weight: 600; padding: 8px 16px;
+  }
+  .btn-ghost { border: 0; background: none; color: var(--accent); font-weight: 700; padding: 4px 0; }
+
+  .field { margin-top: 15px; }
+  .field-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-2); margin-bottom: 7px;
+  }
+  .field-label .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-3); }
+  textarea, input[type=text], input[type=tel] {
+    width: 100%; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--surface); color: var(--ink);
+    padding: 10px 12px; font: inherit; resize: vertical;
+  }
+  textarea { min-height: 64px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chips button {
+    border: 1px solid var(--line); background: var(--surface-2);
+    border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 600;
+  }
+  .chips button.sel { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+  /* Gestione abitudini */
+  .habit-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line);
+  }
+  .habit-row:last-child { border-bottom: 0; }
+  .habit-row .h-meta { flex: 1; }
+  .habit-row .h-name { font-weight: 700; }
+  .habit-row .h-cue { color: var(--ink-2); font-size: 14px; }
+  .habit-row .actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .habit-row .actions button { border: 1px solid var(--line); background: var(--surface-2); border-radius: 7px; padding: 4px 10px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+
+  /* Progressi */
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 13px 15px; }
+  .tile .num { font-family: "Bricolage Grotesque", sans-serif; font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.15; }
+  .tile .num.acc { color: var(--accent); }
+  .tile .lbl { font-size: 13px; color: var(--ink-2); }
+
+  .hm-title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+  .hm-title .h-name { font-weight: 700; font-size: 16.5px; }
+  .hm-stats { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .heatmap { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 14px); gap: 3px; margin-top: 8px; width: max-content; }
+  .heatmap .c { width: 14px; height: 14px; border-radius: 3.5px; background: var(--cell-off); }
+  .heatmap .c.done { background: var(--accent); }
+  .heatmap .c.today { box-shadow: inset 0 0 0 1.5px var(--ink-2); }
+  .heatmap .c.void { background: transparent; }
+  .hm-scroll { overflow-x: auto; padding-bottom: 4px; }
+
+  /* Dialog SOS */
+  dialog {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--surface); color: var(--ink);
+    max-width: 420px; width: calc(100vw - 48px); padding: 20px;
+  }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  .call-list { display: grid; gap: 7px; margin-top: 12px; }
+  .call-list a {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 14px; text-decoration: none; color: var(--ink); font-weight: 600;
+  }
+  .call-list a .tel { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  .footnote { color: var(--ink-3); font-size: 13px; text-align: center; padding: 4px 16px 12px; }
+  .storage-note { display: none; }
+  .storage-note.show { display: block; }
+  .empty-note { color: var(--ink-3); font-size: 14.5px; padding: 14px 0; text-align: center; }
+
+  nav.tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+    background: var(--surface); border-top: 1px solid var(--line);
+  }
+  nav.tabbar .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+  nav.tabbar button {
+    border: 0; background: none; padding: 10px 0 12px;
+    font-size: 13px; font-weight: 700; color: var(--ink-3);
+    display: grid; gap: 3px; justify-items: center;
+  }
+  nav.tabbar button .ico { width: 22px; height: 22px; }
+  nav.tabbar button .ico path, nav.tabbar button .ico circle, nav.tabbar button .ico rect { stroke: currentColor; }
+  nav.tabbar button.active { color: var(--accent); }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%);
+    background: var(--ink); color: var(--ground); border-radius: 999px;
+    padding: 9px 20px; font-weight: 600; font-size: 15px;
+    opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 60;
+    white-space: nowrap;
+  }
+  #toast.show { opacity: 1; }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brandline">
+      <div class="brand">Diventa<span class="dot">.</span></div>
+      <div class="hdr-right">
+        <span class="votes-chip" id="votes-chip" hidden></span>
+        <button class="sos-btn" id="btn-sos" type="button">SOS</button>
+      </div>
+    </div>
+    <div class="today-date" id="hdr-date"></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ══════════ OGGI ══════════ -->
+  <section data-view="oggi">
+    <div class="manifesto" id="manifesto"></div>
+    <div id="banner-box"></div>
+    <div id="habits-today" style="display:grid;gap:10px;"></div>
+    <div class="footnote storage-note" id="storage-note">Salvataggio locale su questo browser: i dati non seguono l'account.</div>
+  </section>
+
+  <!-- ══════════ ABITUDINI ══════════ -->
+  <section data-view="abitudini" hidden>
+    <div class="card">
+      <h2>Le mie abitudini</h2>
+      <p class="muted" style="margin:4px 0 0;">Poche e piccole: la scienza della formazione delle abitudini premia la costanza su scala minima, non l'ambizione del primo giorno. Massimo tre attive alla volta.</p>
+      <div id="habit-list"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="form-title">Nuova abitudine</h2>
+      <div class="field">
+        <div class="field-label"><span>L'abitudine</span></div>
+        <input type="text" id="f-nome" placeholder="Es. allenarmi, leggere, meditare…">
+      </div>
+      <div class="field">
+        <div class="field-label"><span>L'aggancio</span><span class="hint">quando, esattamente?</span></div>
+        <input type="text" id="f-ancora" placeholder="Dopo il caffè del mattino… / Quando torno a casa…">
+        <div class="small" style="margin-top:5px;">La formula «dopo X, farò Y» — l'intenzione di implementazione — è la tecnica con l'evidenza più solida per far partire un comportamento.</div>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>La versione da 2 minuti</span><span class="hint">il minimo nei giorni no</span></div>
+        <input type="text" id="f-minima" placeholder="Es. mettermi le scarpe e uscire · leggere 1 pagina">
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Per chi voti</span><span class="hint">l'identità che costruisce</span></div>
+        <input type="text" id="f-voto" placeholder="Es. una persona che si allena · una persona lucida">
+      </div>
+      <button class="btn-primary" id="btn-save-habit">Aggiungi l'abitudine</button>
+      <button class="btn-ghost" id="btn-cancel-edit" hidden style="width:100%;margin-top:8px;">Annulla modifica</button>
+    </div>
+  </section>
+
+  <!-- ══════════ PROGRESSI ══════════ -->
+  <section data-view="progressi" hidden>
+    <div class="tiles">
+      <div class="tile"><div class="num acc" id="t-voti">–</div><div class="lbl">voti totali per la nuova identità</div></div>
+      <div class="tile"><div class="num" id="t-sett">–</div><div class="lbl">voti questa settimana</div></div>
+      <div class="tile"><div class="num" id="t-perc">–</div><div class="lbl">costanza, ultimi 30 giorni</div></div>
+      <div class="tile"><div class="num" id="t-giorni">–</div><div class="lbl">giorni con almeno un voto, di fila</div></div>
+    </div>
+
+    <div class="card" id="heatmaps"></div>
+
+    <div class="card">
+      <h2>Revisione della settimana</h2>
+      <p class="muted" style="margin:4px 0 0;">Cinque minuti, una volta a settimana. Il contrasto mentale — vedere insieme il traguardo e l'ostacolo, con un piano — funziona meglio del solo pensiero positivo.</p>
+      <div class="field">
+        <div class="field-label"><span>Cosa ha funzionato</span></div>
+        <textarea id="r-bene"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>L'ostacolo principale</span><span class="hint">interno, concreto</span></div>
+        <textarea id="r-ostacolo"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Se ostacolo, allora…</span><span class="hint">il piano per la prossima volta</span></div>
+        <textarea id="r-piano" placeholder="Se [ostacolo], allora [azione concreta]…"></textarea>
+      </div>
+      <button class="btn-primary" id="btn-save-review">Salva la revisione</button>
+      <div class="small" id="review-status" style="margin-top:8px;"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ IDENTITÀ ══════════ -->
+  <section data-view="identita" hidden>
+    <div class="card">
+      <h2>La persona che sto diventando</h2>
+      <p class="muted" style="margin:4px 0 0;">
+        Non si cambia identità decidendolo: la si costruisce a colpi di prove.
+        Ogni abitudine completata è un voto per la persona che vuoi essere;
+        nessun voto singolo decide l'elezione, ma la maggioranza sì.
+        Scrivi l'identità in positivo — chi diventi, non chi smetti di essere.
+      </p>
+      <div class="field">
+        <div class="field-label"><span>Io sto diventando…</span></div>
+        <textarea id="i-frase" placeholder="…una persona che mantiene la parola data a sé stessa. Che si allena, dorme e protegge la propria lucidità."></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>I miei tre valori</span><span class="hint">quelli per cui vale la fatica</span></div>
+        <div class="chips" id="chips-valori"></div>
+      </div>
+      <div class="field">
+        <div class="field-label"><span>Perché adesso</span></div>
+        <textarea id="i-perche" placeholder="Cosa rende questo momento quello giusto."></textarea>
+      </div>
+      <button class="btn-primary" id="btn-save-ident">Salva l'identità</button>
+    </div>
+    <div class="footnote">
+      Diventa è uno strumento di costruzione a supporto di un percorso di cura, non un sostituto.<br>
+      I dati restano in questo artifact privato: non condividere il link.
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Sezioni">
+  <div class="wrap">
+    <button data-nav="oggi" class="active">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.4 2.4 4.8-5"/></svg>
+      Oggi
+    </button>
+    <button data-nav="abitudini">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.9"><path d="M5 7h14M5 12h14M5 17h9"/></svg>
+      Abitudini
+    </button>
+    <button data-nav="progressi">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.9"><rect x="4" y="12" width="4" height="7" rx="1"/><rect x="10" y="8" width="4" height="11" rx="1"/><rect x="16" y="4" width="4" height="15" rx="1"/></svg>
+      Progressi
+    </button>
+    <button data-nav="identita">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.9"><circle cx="12" cy="8.5" r="3.5"/><path d="M5.5 19.5c1.2-3.4 3.6-5 6.5-5s5.3 1.6 6.5 5"/></svg>
+      Identità
+    </button>
+  </div>
+</nav>
+
+<dialog id="sos-dialog">
+  <h2 style="font-size:20px;">Se serve aiuto adesso</h2>
+  <p class="muted" style="margin:6px 0 0;">Un momento difficile non annulla i voti già espressi.</p>
+  <div class="call-list" id="sos-list"></div>
+  <button class="btn-secondary" id="btn-sos-close" style="width:100%;margin-top:14px;">Chiudi</button>
+</dialog>
+
+<div id="toast"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ───────────────────────── costanti e stato ─────────────────────────
+  const VALORI = ["Lucidità", "Salute", "Libertà", "Onestà", "Disciplina", "Famiglia", "Creatività", "Rispetto di me", "Coraggio", "Presenza"];
+  const FIXED_CONTACTS = [
+    { nome: "Emergenza", tel: "112" },
+    { nome: "Telefono Amico Italia (10–24)", tel: "02 2327 2327" }
+  ];
+  const state = {
+    db: null,
+    habits: new Map(),      // id → {id, nome, ancora, minima, voto, creata, archiviata}
+    log: new Map(),         // "YYYY-MM-DD" → {date, done: {id: true}}
+    ident: null,            // {frase, valori[], perche}
+    planContacts: [],       // contatti personali salvati in piano/main (v. precedente dell'app)
+    editingId: null,
+    valSel: new Set(),
+    view: "oggi"
+  };
+
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
+  const pad = (n) => String(n).padStart(2, "0");
+  const keyOf = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const todayKey = () => keyOf(new Date());
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+
+  // ───────────────────────── persistenza ─────────────────────────
+  const LS = { h: "diventa-habits", l: "diventa-log", i: "diventa-ident" };
+  function lsLoad() {
+    try {
+      Object.entries(JSON.parse(localStorage.getItem(LS.h) || "{}")).forEach(([k, v]) => state.habits.set(k, v));
+      Object.entries(JSON.parse(localStorage.getItem(LS.l) || "{}")).forEach(([k, v]) => state.log.set(k, v));
+      state.ident = JSON.parse(localStorage.getItem(LS.i) || "null");
+    } catch (e) { /* storage assente: si riparte vuoti */ }
+  }
+  function lsSave() {
+    try {
+      localStorage.setItem(LS.h, JSON.stringify(Object.fromEntries(state.habits)));
+      localStorage.setItem(LS.l, JSON.stringify(Object.fromEntries(state.log)));
+      if (state.ident) localStorage.setItem(LS.i, JSON.stringify(state.ident));
+    } catch (e) { /* pieno o bloccato */ }
+  }
+  async function dbSet(path, data) {
+    if (state.db) {
+      try { await state.db.doc(path).set(data); return; }
+      catch (e) { toast("Salvato solo su questo dispositivo"); }
+    }
+    lsSave();
+  }
+
+  async function initStore() {
+    const db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+    if (!db) { lsLoad(); $("#storage-note").classList.add("show"); refreshAll(); return; }
+    state.db = db;
+    db.collection("abitudini").limit(200).onSnapshot((snap) => {
+      snap.docs.forEach((d) => { const v = d.data(); if (v && v.id) state.habits.set(v.id, v); });
+      snap.docChanges().forEach((c) => { if (c.type === "removed" && c.doc.data()) state.habits.delete(c.doc.data().id); });
+      refreshAll();
+    }, () => { lsLoad(); $("#storage-note").classList.add("show"); refreshAll(); });
+    db.collection("log").orderBy("date", "desc").limit(200).onSnapshot((snap) => {
+      snap.docs.forEach((d) => { const v = d.data(); if (v && v.date) state.log.set(v.date, v); });
+      refreshAll();
+    });
+    db.doc("identita/main").onSnapshot((snap) => {
+      if (snap.exists) { state.ident = snap.data(); renderIdent(); renderManifesto(); }
+    });
+    db.doc("piano/main").onSnapshot((snap) => {
+      if (snap.exists) { state.planContacts = (snap.data().contatti || []).filter((c) => c.tel); renderSos(); }
+    });
+  }
+
+  // ───────────────────────── derivate ─────────────────────────
+  const activeHabits = () => [...state.habits.values()].filter((h) => !h.archiviata).sort((a, b) => (a.creata || "").localeCompare(b.creata || ""));
+  const doneOn = (dateKey, id) => { const l = state.log.get(dateKey); return !!(l && l.done && l.done[id]); };
+  function votesOn(dateKey) { const l = state.log.get(dateKey); return l && l.done ? Object.values(l.done).filter(Boolean).length : 0; }
+  function totalVotes() { let n = 0; state.log.forEach((l) => { n += Object.values(l.done || {}).filter(Boolean).length; }); return n; }
+  function weekVotes() {
+    let n = 0; const now = new Date();
+    const dow = (now.getDay() + 6) % 7; // lunedì = 0
+    for (let i = 0; i <= dow; i++) n += votesOn(keyOf(addDays(now, -i)));
+    return n;
+  }
+  function daysWithVoteStreak() {
+    let n = 0, d = new Date();
+    if (votesOn(todayKey()) === 0) d = addDays(d, -1);
+    while (votesOn(keyOf(d)) > 0) { n++; d = addDays(d, -1); }
+    return n;
+  }
+  function habitStats(id, creata) {
+    let streak = 0, d = new Date();
+    if (!doneOn(todayKey(), id)) d = addDays(d, -1);
+    while (doneOn(keyOf(d), id)) { streak++; d = addDays(d, -1); }
+    let done30 = 0, span = 0;
+    for (let i = 0; i < 30; i++) {
+      const k = keyOf(addDays(new Date(), -i));
+      if (creata && k < creata.slice(0, 10)) break;
+      span++;
+      if (doneOn(k, id)) done30++;
+    }
+    return { streak, perc: span ? Math.round(100 * done30 / span) : 0 };
+  }
+
+  // ───────────────────────── Oggi ─────────────────────────
+  function renderManifesto() {
+    const m = $("#manifesto"); m.textContent = "";
+    m.appendChild(el("div", "lead", "Oggi voti per diventare"));
+    if (state.ident && state.ident.frase) {
+      m.appendChild(el("div", "frase", state.ident.frase));
+      if (state.ident.valori && state.ident.valori.length) m.appendChild(el("div", "small", "Valori in gioco: " + state.ident.valori.join(" · ")));
+    } else {
+      m.appendChild(el("div", "frase", "…chi, esattamente?"));
+      const b = el("button", "", "Scrivi la tua identità →"); b.type = "button";
+      b.addEventListener("click", () => show("identita"));
+      m.appendChild(b);
+    }
+  }
+
+  function renderBanner() {
+    const box = $("#banner-box"); box.textContent = "";
+    const habits = activeHabits();
+    if (!habits.length) return;
+    const yesterday = keyOf(addDays(new Date(), -1));
+    const missed = habits.filter((h) => {
+      const created = (h.creata || "").slice(0, 10);
+      return (!created || created < yesterday) && !doneOn(yesterday, h.id);
+    });
+    const allDone = habits.every((h) => doneOn(todayKey(), h.id));
+    if (allDone) {
+      const b = el("div", "banner win");
+      b.appendChild(el("strong", "", "Tutti i voti espressi."));
+      b.appendChild(document.createTextNode("Giornata piena per la nuova identità. Domani si rivota."));
+      box.appendChild(b);
+    } else if (missed.length) {
+      const b = el("div", "banner");
+      b.appendChild(el("strong", "", "Mai due giorni di fila."));
+      b.appendChild(document.createTextNode("Saltare un giorno non danneggia un'abitudine — lo dicono i dati sulla loro formazione. Saltarne due inizia a scioglierla: oggi " + (missed.length === 1 ? ("«" + missed[0].nome + "» conta doppio.") : "queste conta doppio: " + missed.map((h) => "«" + h.nome + "»").join(", ") + ".")));
+      box.appendChild(b);
+    }
+  }
+
+  function renderToday() {
+    const box = $("#habits-today"); box.textContent = "";
+    const habits = activeHabits();
+    if (!habits.length) {
+      const c = el("div", "card");
+      c.appendChild(el("h2", "", "Si parte da un'abitudine"));
+      const p = el("p", "muted", "Una sola, agganciata a un momento preciso della giornata, nella versione più piccola possibile. Creala nella sezione Abitudini.");
+      p.style.margin = "6px 0 0"; c.appendChild(p);
+      const b = el("button", "btn-primary", "Crea la prima abitudine"); b.type = "button";
+      b.addEventListener("click", () => show("abitudini"));
+      c.appendChild(b);
+      box.appendChild(c);
+      return;
+    }
+    habits.forEach((h) => {
+      const done = doneOn(todayKey(), h.id);
+      const card = el("button", "habit-today" + (done ? " done" : "")); card.type = "button";
+      card.setAttribute("aria-pressed", done);
+      const tick = el("span", "tick");
+      tick.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="' + (done ? "var(--accent-ink)" : "currentColor") + '" stroke-width="3"><path d="M5 13l4.5 4.5L19 7"/></svg>';
+      const meta = el("span");
+      meta.appendChild(el("span", "h-name", h.nome)).style.display = "block";
+      if (h.ancora) meta.appendChild(el("span", "h-cue", h.ancora + (h.minima ? " → almeno: " + h.minima : ""))).style.display = "block";
+      if (h.voto) meta.appendChild(el("span", "h-vote", "Un voto per: " + h.voto)).style.display = "block";
+      card.append(tick, meta);
+      card.addEventListener("click", () => toggleHabit(h.id));
+      box.appendChild(card);
+    });
+  }
+
+  async function toggleHabit(id) {
+    const k = todayKey();
+    const cur = state.log.get(k) || { date: k, done: {} };
+    const next = { date: k, done: { ...(cur.done || {}) }, aggiornatoIl: new Date().toISOString() };
+    next.done[id] = !next.done[id];
+    state.log.set(k, next);
+    renderToday(); renderBanner(); renderChip();
+    await dbSet("log/" + k, next);
+    if (next.done[id] && activeHabits().every((h) => doneOn(k, h.id))) toast("Tutti i voti di oggi: espressi");
+  }
+
+  function renderChip() {
+    const habits = activeHabits();
+    const chip = $("#votes-chip");
+    if (!habits.length) { chip.hidden = true; return; }
+    chip.hidden = false;
+    chip.textContent = votesOn(todayKey()) + "/" + habits.length + " voti oggi";
+  }
+
+  // ───────────────────────── Abitudini ─────────────────────────
+  function renderHabitList() {
+    const box = $("#habit-list"); box.textContent = "";
+    const all = [...state.habits.values()].sort((a, b) => (a.archiviata ? 1 : 0) - (b.archiviata ? 1 : 0) || (a.creata || "").localeCompare(b.creata || ""));
+    if (!all.length) { box.appendChild(el("div", "empty-note", "Nessuna abitudine ancora: la prima si crea qui sotto.")); return; }
+    all.forEach((h) => {
+      const row = el("div", "habit-row");
+      const meta = el("div", "h-meta");
+      meta.appendChild(el("div", "h-name", h.nome + (h.archiviata ? " · archiviata" : "")));
+      if (h.ancora) meta.appendChild(el("div", "h-cue", h.ancora + (h.minima ? " → almeno: " + h.minima : "")));
+      const acts = el("div", "actions");
+      const bE = el("button", "", "Modifica"); bE.type = "button";
+      bE.addEventListener("click", () => startEdit(h));
+      const bA = el("button", "", h.archiviata ? "Riattiva" : "Archivia"); bA.type = "button";
+      bA.addEventListener("click", async () => {
+        const upd = { ...h, archiviata: !h.archiviata };
+        state.habits.set(h.id, upd);
+        await dbSet("abitudini/" + h.id, upd);
+        refreshAll();
+      });
+      acts.append(bE, bA);
+      row.append(meta, acts);
+      box.appendChild(row);
+    });
+  }
+  function startEdit(h) {
+    state.editingId = h.id;
+    $("#form-title").textContent = "Modifica abitudine";
+    $("#f-nome").value = h.nome; $("#f-ancora").value = h.ancora || "";
+    $("#f-minima").value = h.minima || ""; $("#f-voto").value = h.voto || "";
+    $("#btn-save-habit").textContent = "Salva le modifiche";
+    $("#btn-cancel-edit").hidden = false;
+    window.scrollTo(0, 0);
+  }
+  function resetForm() {
+    state.editingId = null;
+    $("#form-title").textContent = "Nuova abitudine";
+    ["#f-nome", "#f-ancora", "#f-minima", "#f-voto"].forEach((s) => $(s).value = "");
+    $("#btn-save-habit").textContent = "Aggiungi l'abitudine";
+    $("#btn-cancel-edit").hidden = true;
+  }
+  async function onSaveHabit() {
+    const nome = $("#f-nome").value.trim();
+    if (!nome) { toast("Dai un nome all'abitudine"); return; }
+    if (!state.editingId && activeHabits().length >= 3) { toast("Massimo 3 attive: archiviane una prima"); return; }
+    const id = state.editingId || (Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
+    const prev = state.habits.get(id) || {};
+    const h = {
+      id, nome,
+      ancora: $("#f-ancora").value.trim(),
+      minima: $("#f-minima").value.trim(),
+      voto: $("#f-voto").value.trim(),
+      creata: prev.creata || new Date().toISOString(),
+      archiviata: prev.archiviata || false
+    };
+    state.habits.set(id, h);
+    await dbSet("abitudini/" + id, h);
+    resetForm(); refreshAll();
+    toast(state.editingId ? "Abitudine aggiornata" : "Abitudine creata");
+  }
+
+  // ───────────────────────── Progressi ─────────────────────────
+  function renderStats() {
+    $("#t-voti").textContent = totalVotes();
+    $("#t-sett").textContent = weekVotes();
+    const habits = activeHabits();
+    if (habits.length) {
+      const percs = habits.map((h) => habitStats(h.id, h.creata).perc);
+      $("#t-perc").textContent = Math.round(percs.reduce((a, b) => a + b, 0) / percs.length) + "%";
+    } else $("#t-perc").textContent = "–";
+    $("#t-giorni").textContent = daysWithVoteStreak();
+  }
+
+  function renderHeatmaps() {
+    const box = $("#heatmaps"); box.textContent = "";
+    box.appendChild(el("h2", "", "Ultime 8 settimane"));
+    const habits = activeHabits();
+    if (!habits.length) { box.appendChild(el("div", "empty-note", "Le mappe si accendono con i primi voti.")); return; }
+    // griglia: colonne = settimane, righe = lun→dom; ultimo giorno = oggi
+    const today = new Date();
+    const dow = (today.getDay() + 6) % 7;
+    const start = addDays(today, -(7 * 7 + dow)); // lunedì di 8 settimane fa
+    habits.forEach((h) => {
+      const wrapEl = el("div"); wrapEl.style.marginTop = "14px";
+      const st = habitStats(h.id, h.creata);
+      const head = el("div", "hm-title");
+      head.appendChild(el("span", "h-name", h.nome));
+      head.appendChild(el("span", "hm-stats", st.streak + " di fila · " + st.perc + "% / 30gg"));
+      wrapEl.appendChild(head);
+      const scroll = el("div", "hm-scroll");
+      const grid = el("div", "heatmap");
+      const created = (h.creata || "").slice(0, 10);
+      for (let w = 0; w < 8; w++) {
+        for (let g = 0; g < 7; g++) {
+          const d = addDays(start, w * 7 + g);
+          const k = keyOf(d);
+          const c = el("div", "c");
+          if (d > today || (created && k < created)) c.classList.add("void");
+          else {
+            if (doneOn(k, h.id)) c.classList.add("done");
+            if (k === todayKey()) c.classList.add("today");
+            c.title = new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "short" }) + (doneOn(k, h.id) ? " · fatto" : "");
+          }
+          grid.appendChild(c);
+        }
+      }
+      scroll.appendChild(grid);
+      wrapEl.appendChild(scroll);
+      box.appendChild(wrapEl);
+    });
+  }
+
+  // revisione settimanale
+  function isoWeekKey() {
+    const d = new Date();
+    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day = t.getUTCDay() || 7;
+    t.setUTCDate(t.getUTCDate() + 4 - day);
+    const y = t.getUTCFullYear();
+    const w = Math.ceil(((t - Date.UTC(y, 0, 1)) / 86400000 + 1) / 7);
+    return y + "-W" + pad(w);
+  }
+  async function loadReview() {
+    if (!state.db) return;
+    try {
+      const snap = await state.db.doc("revisioni/" + isoWeekKey()).get();
+      if (snap.exists) {
+        const r = snap.data();
+        $("#r-bene").value = r.bene || ""; $("#r-ostacolo").value = r.ostacolo || ""; $("#r-piano").value = r.piano || "";
+        $("#review-status").textContent = "Revisione di questa settimana già salvata: puoi aggiornarla.";
+      }
+    } catch (e) { /* lettura non disponibile */ }
+  }
+  async function onSaveReview() {
+    await dbSet("revisioni/" + isoWeekKey(), {
+      settimana: isoWeekKey(),
+      bene: $("#r-bene").value, ostacolo: $("#r-ostacolo").value, piano: $("#r-piano").value,
+      aggiornatoIl: new Date().toISOString()
+    });
+    $("#review-status").textContent = "Revisione di questa settimana già salvata: puoi aggiornarla.";
+    toast("Revisione salvata");
+  }
+
+  // ───────────────────────── Identità ─────────────────────────
+  function buildValChips() {
+    const box = $("#chips-valori");
+    VALORI.forEach((v) => {
+      const b = el("button", "", v); b.type = "button";
+      b.addEventListener("click", () => {
+        if (state.valSel.has(v)) state.valSel.delete(v);
+        else if (state.valSel.size < 3) state.valSel.add(v);
+        else { toast("Tre valori bastano: togline uno prima"); return; }
+        b.classList.toggle("sel", state.valSel.has(v));
+      });
+      box.appendChild(b);
+    });
+  }
+  function renderIdent() {
+    const i = state.ident; if (!i) return;
+    $("#i-frase").value = i.frase || "";
+    $("#i-perche").value = i.perche || "";
+    state.valSel = new Set(i.valori || []);
+    $("#chips-valori").querySelectorAll("button").forEach((b) => b.classList.toggle("sel", state.valSel.has(b.textContent)));
+  }
+  async function onSaveIdent() {
+    const frase = $("#i-frase").value.trim();
+    if (!frase) { toast("Scrivi almeno la frase di identità"); return; }
+    state.ident = { frase, valori: [...state.valSel], perche: $("#i-perche").value.trim(), aggiornatoIl: new Date().toISOString() };
+    await dbSet("identita/main", state.ident);
+    renderManifesto();
+    toast("Identità salvata");
+  }
+
+  // ───────────────────────── SOS ─────────────────────────
+  function renderSos() {
+    const list = $("#sos-list"); list.textContent = "";
+    FIXED_CONTACTS.concat(state.planContacts).forEach((c) => {
+      const a = el("a"); a.href = "tel:" + c.tel.replace(/\s/g, "");
+      a.appendChild(el("span", "", c.nome));
+      a.appendChild(el("span", "tel", c.tel));
+      list.appendChild(a);
+    });
+  }
+
+  // ───────────────────────── navigazione, toast ─────────────────────────
+  function show(view) {
+    state.view = view;
+    document.querySelectorAll("main section[data-view]").forEach((s) => s.hidden = s.dataset.view !== view);
+    document.querySelectorAll("nav.tabbar button").forEach((b) => b.classList.toggle("active", b.dataset.nav === view));
+    if (view === "progressi") { renderStats(); renderHeatmaps(); loadReview(); }
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("nav.tabbar button").forEach((b) => b.addEventListener("click", () => show(b.dataset.nav)));
+
+  let toastTimer = null;
+  function toast(msg) {
+    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+  }
+
+  function refreshAll() {
+    renderManifesto(); renderBanner(); renderToday(); renderChip(); renderHabitList();
+    if (state.view === "progressi") { renderStats(); renderHeatmaps(); }
+  }
+
+  // ───────────────────────── avvio ─────────────────────────
+  const d = new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+  $("#hdr-date").textContent = d.charAt(0).toUpperCase() + d.slice(1);
+  buildValChips(); renderSos(); refreshAll();
+  $("#btn-save-habit").addEventListener("click", onSaveHabit);
+  $("#btn-cancel-edit").addEventListener("click", resetForm);
+  $("#btn-save-ident").addEventListener("click", onSaveIdent);
+  $("#btn-save-review").addEventListener("click", onSaveReview);
+  $("#btn-sos").addEventListener("click", () => $("#sos-dialog").showModal());
+  $("#btn-sos-close").addEventListener("click", () => $("#sos-dialog").close());
+  initStore();
+})();
+</script>

@@ -1,0 +1,1060 @@
+<title>La Rotta</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --ground: #F4F5F2;
+    --surface: #FFFFFF;
+    --surface-2: #ECEEE9;
+    --ink: #22302F;
+    --ink-2: #5A6B69;
+    --ink-3: #8A9895;
+    --line: #DDE2DC;
+    --accent: #1E7A6F;
+    --accent-ink: #FFFFFF;
+    --accent-soft: rgba(30,122,111,.10);
+    --dep: #4A5CAB;          /* polo depressivo */
+    --man: #C25836;          /* polo attivazione/mania */
+    --neutro: #6B7A76;       /* umore stabile */
+    --warn: #AD742A;         /* craving / allerta */
+    --warn-soft: rgba(173,116,42,.12);
+    --good: #3E7C4F;
+    --good-soft: rgba(62,124,79,.12);
+    --alert-soft: rgba(194,88,54,.10);
+    --shadow: 0 1px 3px rgba(34,48,47,.08);
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #131A1A;
+      --surface: #1C2524;
+      --surface-2: #243030;
+      --ink: #E5EAE7;
+      --ink-2: #9DACA8;
+      --ink-3: #71807D;
+      --line: #2E3B3A;
+      --accent: #189F8C;
+      --accent-ink: #0B1514;
+      --accent-soft: rgba(24,159,140,.14);
+      --dep: #7183E0;
+      --man: #D5653B;
+      --neutro: #8FA09B;
+      --warn: #C08329;
+      --warn-soft: rgba(192,131,41,.16);
+      --good: #3FA463;
+      --good-soft: rgba(63,164,99,.16);
+      --alert-soft: rgba(213,101,59,.14);
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #131A1A;
+    --surface: #1C2524;
+    --surface-2: #243030;
+    --ink: #E5EAE7;
+    --ink-2: #9DACA8;
+    --ink-3: #71807D;
+    --line: #2E3B3A;
+    --accent: #189F8C;
+    --accent-ink: #0B1514;
+    --accent-soft: rgba(24,159,140,.14);
+    --dep: #7183E0;
+    --man: #D5653B;
+    --neutro: #8FA09B;
+    --warn: #C08329;
+    --warn-soft: rgba(192,131,41,.16);
+    --good: #3FA463;
+    --good-soft: rgba(63,164,99,.16);
+    --alert-soft: rgba(213,101,59,.14);
+    --shadow: none;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-bottom: 84px;
+  }
+  h1, h2, h3 { font-family: "Newsreader", Georgia, serif; text-wrap: balance; margin: 0; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+
+  .wrap { max-width: 660px; margin: 0 auto; padding: 0 16px; }
+
+  header.top { padding: 20px 0 14px; }
+  .brandline { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .brand { font-family: "Newsreader", Georgia, serif; font-size: 30px; font-weight: 600; font-style: italic; letter-spacing: .01em; }
+  .brand .tld { color: var(--accent); }
+  .today-date { color: var(--ink-2); font-size: 15px; }
+  .streak-chip {
+    display: none; align-items: center; gap: 7px;
+    background: var(--good-soft); color: var(--good);
+    border: 1px solid transparent; border-radius: 999px;
+    padding: 3px 12px; font-weight: 600; font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .streak-chip.show { display: inline-flex; }
+  .streak-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+
+  main section[data-view] { display: grid; gap: 14px; padding: 4px 0 24px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+  }
+  .card > h2 { font-size: 21px; font-weight: 600; margin-bottom: 4px; }
+  .field { margin-top: 16px; }
+  .field-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-2); margin-bottom: 8px;
+  }
+  .field-label .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-3); font-size: 13px; }
+
+  /* Umore: selettore -3..+3 */
+  .mood-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .mood-btn {
+    border: 1px solid var(--line); background: var(--surface-2);
+    border-radius: 8px; padding: 10px 0 8px; text-align: center;
+    font-weight: 700; font-variant-numeric: tabular-nums; font-size: 15px;
+    transition: background .15s, color .15s;
+  }
+  .mood-btn.sel-neg { background: var(--dep); border-color: var(--dep); color: #fff; }
+  .mood-btn.sel-pos { background: var(--man); border-color: var(--man); color: #fff; }
+  .mood-btn.sel-zero { background: var(--neutro); border-color: var(--neutro); color: #fff; }
+  .mood-desc { margin-top: 8px; font-size: 14px; color: var(--ink-2); min-height: 21px; }
+  .mood-poles { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+
+  /* Stepper sonno */
+  .stepper { display: inline-flex; align-items: center; gap: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .stepper button { width: 44px; height: 42px; border: 0; background: var(--surface-2); font-size: 20px; font-weight: 600; }
+  .stepper .val {
+    min-width: 86px; text-align: center; font-weight: 700; font-size: 18px;
+    font-variant-numeric: tabular-nums; background: var(--surface);
+    align-self: stretch; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Slider craving */
+  .slider-row { display: flex; align-items: center; gap: 14px; }
+  .slider-row input[type=range] { flex: 1; accent-color: var(--warn); height: 32px; }
+  .slider-val {
+    min-width: 42px; text-align: center; font-weight: 700; font-size: 18px;
+    font-variant-numeric: tabular-nums; background: var(--surface-2);
+    border-radius: 8px; padding: 5px 0;
+  }
+  .slider-val.hot { background: var(--warn-soft); color: var(--warn); }
+
+  /* Segmentati */
+  .seg { display: flex; gap: 5px; }
+  .seg button {
+    flex: 1; border: 1px solid var(--line); background: var(--surface-2);
+    border-radius: 8px; padding: 9px 0; font-weight: 600;
+  }
+  .seg button.sel { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .seg button.sel-warn { background: var(--warn); border-color: var(--warn); color: #fff; }
+
+  /* Chips skill */
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chips button {
+    border: 1px solid var(--line); background: var(--surface-2);
+    border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 600;
+  }
+  .chips button.sel { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+  textarea, input[type=text], input[type=tel] {
+    width: 100%; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--surface); color: var(--ink);
+    padding: 10px 12px; font: inherit; resize: vertical;
+  }
+  textarea { min-height: 74px; }
+
+  .btn-primary {
+    width: 100%; margin-top: 18px; border: 0; border-radius: 8px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 700; font-size: 17px; padding: 13px 0;
+  }
+  .btn-secondary {
+    border: 1px solid var(--line); background: var(--surface-2);
+    border-radius: 8px; font-weight: 600; padding: 8px 16px;
+  }
+
+  /* Avvisi */
+  .alerts { display: grid; gap: 8px; }
+  .alert { border-radius: var(--radius); padding: 13px 15px; font-size: 15px; border: 1px solid transparent; }
+  .alert strong { display: block; margin-bottom: 2px; }
+  .alert.warn { background: var(--warn-soft); color: var(--ink); border-color: var(--warn); }
+  .alert.danger { background: var(--alert-soft); color: var(--ink); border-color: var(--man); }
+  .alert.ok { background: var(--good-soft); color: var(--ink); border-color: var(--good); }
+  .alert a { color: var(--accent); font-weight: 600; }
+
+  /* Statistiche */
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 13px 15px; }
+  .tile .num { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.15; }
+  .tile .num.good { color: var(--good); }
+  .tile .lbl { font-size: 13px; color: var(--ink-2); }
+
+  .chart-card h3 { font-size: 18px; font-weight: 600; }
+  .chart-sub { font-size: 13px; color: var(--ink-3); margin: 2px 0 8px; }
+  .chart-box { overflow-x: auto; }
+  .chart-box svg { display: block; width: 100%; height: auto; }
+  .empty-note { color: var(--ink-3); font-size: 14px; padding: 18px 0; text-align: center; }
+
+  /* SVG tokens */
+  .ax { stroke: var(--line); stroke-width: 1; }
+  .ax-lbl { fill: var(--ink-3); font-size: 13px; font-family: "Source Sans 3", sans-serif; }
+  .ax-lbl.strong { fill: var(--ink-2); font-weight: 600; }
+  .band-eu { fill: var(--accent-soft); }
+  .mood-line { stroke: var(--neutro); stroke-width: 2; fill: none; stroke-linecap: round; }
+  .pt { stroke: var(--surface); stroke-width: 2; }
+  .pt.neg { fill: var(--dep); } .pt.pos { fill: var(--man); } .pt.zero { fill: var(--neutro); }
+  .bar { fill: var(--accent); }
+  .bar.low { fill: var(--warn); }
+  .refline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+  .crav-line { stroke: var(--warn); stroke-width: 2; fill: none; stroke-linecap: round; }
+  .crav-pt { fill: var(--warn); stroke: var(--surface); stroke-width: 2; }
+  .use-pt { fill: var(--man); stroke: var(--surface); stroke-width: 2; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .legend .k { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 50%; }
+
+  #tooltip {
+    position: fixed; z-index: 50; pointer-events: none; display: none;
+    background: var(--ink); color: var(--ground);
+    border-radius: 6px; padding: 6px 10px; font-size: 13px; max-width: 240px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Strumenti */
+  details.tool {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  details.tool summary {
+    list-style: none; cursor: pointer; padding: 15px 18px;
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  details.tool summary::-webkit-details-marker { display: none; }
+  details.tool summary .t-name { font-family: "Newsreader", Georgia, serif; font-size: 19px; font-weight: 600; }
+  details.tool summary .t-for { color: var(--ink-3); font-size: 13.5px; margin-left: auto; text-align: right; }
+  details.tool[open] summary { border-bottom: 1px solid var(--line); }
+  details.tool .t-body { padding: 14px 18px 17px; font-size: 15px; }
+  details.tool .t-body ol { margin: 8px 0 0; padding-left: 22px; display: grid; gap: 5px; }
+  details.tool .t-src { margin-top: 10px; font-size: 12.5px; color: var(--ink-3); }
+
+  /* Piano */
+  .contact-row { display: grid; grid-template-columns: 1fr 130px 36px; gap: 7px; margin-bottom: 7px; }
+  .contact-row button { border: 1px solid var(--line); background: var(--surface-2); border-radius: 8px; color: var(--ink-2); }
+  .call-list { display: grid; gap: 7px; margin-top: 8px; }
+  .call-list a {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 14px; text-decoration: none; color: var(--ink); font-weight: 600;
+  }
+  .call-list a .tel { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  .footnote { color: var(--ink-3); font-size: 13px; text-align: center; padding: 4px 16px 12px; }
+  .storage-note { display: none; }
+  .storage-note.show { display: block; }
+
+  /* Tab bar */
+  nav.tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+    background: var(--surface); border-top: 1px solid var(--line);
+  }
+  nav.tabbar .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+  nav.tabbar button {
+    border: 0; background: none; padding: 10px 0 12px;
+    font-size: 13px; font-weight: 600; color: var(--ink-3);
+    display: grid; gap: 3px; justify-items: center;
+  }
+  nav.tabbar button .ico { width: 22px; height: 22px; }
+  nav.tabbar button .ico path, nav.tabbar button .ico circle { stroke: currentColor; }
+  nav.tabbar button.active { color: var(--accent); }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%);
+    background: var(--ink); color: var(--ground); border-radius: 999px;
+    padding: 9px 20px; font-weight: 600; font-size: 15px;
+    opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 60;
+    white-space: nowrap;
+  }
+  #toast.show { opacity: 1; }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brandline">
+      <div>
+        <div class="brand">La Rotta<span class="tld">.</span></div>
+        <div class="today-date" id="hdr-date"></div>
+      </div>
+      <span class="streak-chip" id="streak-chip"><span class="dot"></span><span id="streak-txt"></span></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ══════════ OGGI ══════════ -->
+  <section data-view="oggi">
+    <div class="alerts" id="alerts"></div>
+
+    <div class="card">
+      <h2 id="checkin-title">Check-in di oggi</h2>
+      <div class="hint" style="color:var(--ink-3);font-size:14px;">Due minuti. La costanza vale più della precisione.</div>
+
+      <div class="field">
+        <div class="field-label"><span>Umore</span><span class="hint">da −3 a +3</span></div>
+        <div class="mood-row" id="mood-row"></div>
+        <div class="mood-poles"><span>← depressione</span><span>stabile</span><span>attivazione →</span></div>
+        <div class="mood-desc" id="mood-desc">Tocca il valore che descrive la giornata.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Sonno, la notte scorsa</span><span class="hint">ore dormite</span></div>
+        <div class="stepper">
+          <button type="button" id="sleep-minus" aria-label="Mezz'ora in meno">−</button>
+          <div class="val" id="sleep-val">7 h</div>
+          <button type="button" id="sleep-plus" aria-label="Mezz'ora in più">+</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Craving</span><span class="hint">0 = assente · 10 = fortissimo</span></div>
+        <div class="slider-row">
+          <input type="range" id="craving" min="0" max="10" step="1" value="0" aria-label="Intensità del craving da 0 a 10">
+          <div class="slider-val" id="craving-val">0</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Uso di sostanza, oggi o ieri sera</span></div>
+        <div class="seg" id="seg-uso">
+          <button type="button" data-v="no">No</button>
+          <button type="button" data-v="si">Sì</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Farmaci presi come prescritto</span></div>
+        <div class="seg" id="seg-farmaci">
+          <button type="button" data-v="si">Sì</button>
+          <button type="button" data-v="parziale">In parte</button>
+          <button type="button" data-v="no">No</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Strumenti usati oggi</span><span class="hint">facoltativo</span></div>
+        <div class="chips" id="chips-skill"></div>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Nota</span><span class="hint">facoltativa</span></div>
+        <textarea id="nota" placeholder="Cosa è successo, cosa ha aiutato, cosa ha pesato…"></textarea>
+      </div>
+
+      <button class="btn-primary" id="btn-save">Registra la giornata</button>
+      <div class="storage-note footnote" id="storage-note" style="text-align:left;padding:10px 0 0;">
+        Salvataggio locale su questo browser: i dati non seguono l'account.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ ANDAMENTO ══════════ -->
+  <section data-view="andamento" hidden>
+    <div class="tiles">
+      <div class="tile"><div class="num good" id="t-streak">–</div><div class="lbl">giorni senza uso</div></div>
+      <div class="tile"><div class="num" id="t-sonno">–</div><div class="lbl">sonno medio, 7 notti</div></div>
+      <div class="tile"><div class="num" id="t-farmaci">–</div><div class="lbl">aderenza farmaci, 30 giorni</div></div>
+      <div class="tile"><div class="num" id="t-checkin">–</div><div class="lbl">check-in di fila</div></div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Umore</h3>
+      <div class="chart-sub">Ultimi 30 giorni · la fascia verde è la zona di stabilità (−1 … +1)</div>
+      <div class="chart-box" id="chart-mood"></div>
+      <div class="legend">
+        <span class="k"><span class="sw" style="background:var(--dep)"></span>verso la depressione</span>
+        <span class="k"><span class="sw" style="background:var(--neutro)"></span>stabile</span>
+        <span class="k"><span class="sw" style="background:var(--man)"></span>verso l'attivazione</span>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Sonno</h3>
+      <div class="chart-sub">Ultime 14 notti · sotto le 5 ore è il segnale precoce più affidabile di un episodio</div>
+      <div class="chart-box" id="chart-sleep"></div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Craving e uso</h3>
+      <div class="chart-sub">Ultimi 30 giorni</div>
+      <div class="chart-box" id="chart-craving"></div>
+      <div class="legend">
+        <span class="k"><span class="sw" style="background:var(--warn)"></span>craving 0–10</span>
+        <span class="k"><span class="sw" style="background:var(--man)"></span>giorno con uso</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ STRUMENTI ══════════ -->
+  <section data-view="strumenti" hidden>
+    <div class="card" style="padding:15px 18px;">
+      <h2 style="font-size:21px;">Cassetta degli attrezzi</h2>
+      <p style="margin:6px 0 0;color:var(--ink-2);font-size:15px;">
+        Tecniche tratte da terapie con prove di efficacia: DBT, prevenzione delle ricadute,
+        terapia dei ritmi sociali. Allenarle nei giorni tranquilli le rende disponibili nei giorni difficili.
+      </p>
+    </div>
+
+    <details class="tool">
+      <summary><span class="t-name">STOP</span><span class="t-for">impulso forte, decisione a caldo</span></summary>
+      <div class="t-body">
+        Prima di agire d'impulso — un acquisto, un messaggio, una dose, una rottura:
+        <ol>
+          <li><strong>S</strong>top: fermati fisicamente, non muoverti.</li>
+          <li><strong>T</strong>orna indietro di un passo: respira, allontanati dalla situazione.</li>
+          <li><strong>O</strong>sserva: cosa sento nel corpo? Cosa sta succedendo davvero?</li>
+          <li><strong>P</strong>rocedi con consapevolezza: scegli l'azione in linea con i tuoi obiettivi, non con l'impulso.</li>
+        </ol>
+        <div class="t-src">Terapia dialettico-comportamentale (DBT), modulo tolleranza del disagio.</div>
+      </div>
+    </details>
+
+    <details class="tool">
+      <summary><span class="t-name">Surf dell'impulso</span><span class="t-for">craving</span></summary>
+      <div class="t-body">
+        Il craving è un'onda: sale, raggiunge un picco e scende da solo, in genere entro 15–20 minuti.
+        Non devi vincerlo, devi <em>cavalcarlo</em>:
+        <ol>
+          <li>Guarda l'orologio: dai all'onda 20 minuti prima di qualsiasi decisione.</li>
+          <li>Osserva dove senti il craving nel corpo (petto, mani, stomaco) senza combatterlo.</li>
+          <li>Respira dentro quella sensazione: nota come cambia di intensità, minuto per minuto.</li>
+          <li>Nel frattempo cambia contesto: esci dalla stanza, chiama qualcuno, muoviti.</li>
+        </ol>
+        <div class="t-src">Prevenzione delle ricadute basata sulla mindfulness (Marlatt, Bowen).</div>
+      </div>
+    </details>
+
+    <details class="tool">
+      <summary><span class="t-name">TIPP</span><span class="t-for">emozione travolgente, corpo in allarme</span></summary>
+      <div class="t-body">
+        Quando l'attivazione è troppo alta per ragionare, abbassa prima la fisiologia:
+        <ol>
+          <li><strong>T</strong>emperatura: acqua fredda sul viso o un cubetto di ghiaccio in mano per 30 secondi.</li>
+          <li><strong>I</strong>ntenso esercizio: 5–10 minuti di movimento vigoroso (scale, corsa sul posto).</li>
+          <li><strong>P</strong>respirazione lenta: espira più a lungo di quanto inspiri (4 dentro, 6–8 fuori) per qualche minuto.</li>
+          <li><strong>P</strong>rilassamento muscolare: contrai e rilascia i muscoli, gruppo per gruppo.</li>
+        </ol>
+        <div class="t-src">DBT, abilità di sopravvivenza alla crisi.</div>
+      </div>
+    </details>
+
+    <details class="tool">
+      <summary><span class="t-name">HALT</span><span class="t-for">prima di cedere a un impulso</span></summary>
+      <div class="t-body">
+        Il craving spesso maschera un bisogno più semplice. Chiediti se sei:
+        <ol>
+          <li><strong>H</strong>ungry — affamato: quando hai mangiato l'ultima volta?</li>
+          <li><strong>A</strong>ngry — arrabbiato: c'è una rabbia non detta che spinge?</li>
+          <li><strong>L</strong>onely — solo: da quanto non parli con qualcuno di persona?</li>
+          <li><strong>T</strong>ired — stanco: quanto hai dormito?</li>
+        </ol>
+        Rispondi prima al bisogno vero: mangia, sfoga, chiama, riposa. Poi rivaluta l'impulso.
+        <div class="t-src">Prevenzione delle ricadute nei disturbi da uso di sostanze.</div>
+      </div>
+    </details>
+
+    <details class="tool">
+      <summary><span class="t-name">Azione opposta</span><span class="t-for">emozione sproporzionata ai fatti</span></summary>
+      <div class="t-body">
+        Quando un'emozione non è giustificata dai fatti o agirla peggiorerebbe le cose, agisci al contrario:
+        <ol>
+          <li>Nomina l'emozione e il suo impulso (vergogna → nascondersi; rabbia → attaccare; tristezza → ritirarsi).</li>
+          <li>Chiediti: l'emozione è proporzionata ai fatti? Agirla mi avvicina o mi allontana dai miei obiettivi?</li>
+          <li>Se no, fai l'opposto dell'impulso, fino in fondo: la vergogna si cura esponendosi, il ritiro uscendo, la rabbia con gentilezza attiva.</li>
+        </ol>
+        <div class="t-src">DBT, modulo regolazione emotiva.</div>
+      </div>
+    </details>
+
+    <details class="tool">
+      <summary><span class="t-name">Pausa di auto-compassione</span><span class="t-for">autocritica, vergogna, senso di fallimento</span></summary>
+      <div class="t-body">
+        L'autocritica feroce non motiva: alimenta vergogna, e la vergogna alimenta l'uso. Tre frasi, dette sul serio:
+        <ol>
+          <li>«Questo è un momento di sofferenza.» — riconosci il dolore senza minimizzare né drammatizzare.</li>
+          <li>«La sofferenza fa parte dell'essere umani.» — non sei difettoso: sei una persona in difficoltà.</li>
+          <li>«Che io possa trattarmi con la stessa cura che avrei per un amico in questa situazione.»</li>
+        </ol>
+        <div class="t-src">Self-compassion (Neff); la vergogna è uno dei predittori di ricaduta meglio documentati.</div>
+      </div>
+    </details>
+
+    <details class="tool">
+      <summary><span class="t-name">Ritmi regolari</span><span class="t-for">prevenzione degli episodi, ogni giorno</span></summary>
+      <div class="t-body">
+        Nel disturbo bipolare la stabilità dei ritmi quotidiani è terapia, non pignoleria.
+        Quattro àncore, ogni giorno agli stessi orari (±30 minuti):
+        <ol>
+          <li>Sveglia sempre alla stessa ora, anche nel fine settimana.</li>
+          <li>Primo pasto entro un'ora dalla sveglia.</li>
+          <li>Un contatto sociale al giorno, anche breve.</li>
+          <li>Orario fisso di inizio del rituale della buonanotte, schermi spenti.</li>
+        </ol>
+        <div class="t-src">Terapia interpersonale e dei ritmi sociali (IPSRT, Frank).</div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ══════════ PIANO ══════════ -->
+  <section data-view="piano" hidden>
+    <div class="card">
+      <h2>Se serve aiuto adesso</h2>
+      <div class="call-list" id="call-list"></div>
+    </div>
+
+    <div class="card">
+      <h2>Piano di prevenzione</h2>
+      <p style="margin:6px 0 0;color:var(--ink-2);font-size:15px;">
+        Scrivilo nei giorni buoni, possibilmente insieme a chi ti cura: nei giorni difficili basterà seguirlo.
+      </p>
+
+      <div class="field">
+        <div class="field-label"><span>I miei segnali precoci</span></div>
+        <textarea id="p-segnali" rows="4"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Cosa faccio quando ne riconosco uno</span></div>
+        <textarea id="p-passi" rows="4"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Contatti personali</span><span class="hint">psichiatra, terapeuta, SerD, persone fidate</span></div>
+        <div id="contact-rows"></div>
+        <button type="button" class="btn-secondary" id="btn-add-contact">+ Aggiungi contatto</button>
+      </div>
+
+      <div class="field">
+        <div class="field-label"><span>Traguardi e premi</span><span class="hint">decidi ora come premierai i giorni puliti</span></div>
+        <textarea id="p-premi" rows="3"></textarea>
+      </div>
+
+      <button class="btn-primary" id="btn-save-plan">Salva il piano</button>
+    </div>
+
+    <div class="footnote">
+      Questa pagina è uno strumento di auto-monitoraggio a supporto di un percorso di cura:
+      non sostituisce psichiatra, psicoterapeuta o SerD.<br>
+      I dati restano in questo artifact privato: non condividere il link della pagina.
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Sezioni">
+  <div class="wrap">
+    <button data-nav="oggi" class="active">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 8h16M4 8v11a1 1 0 001 1h14a1 1 0 001-1V8M4 8l1.5-3.2A1 1 0 016.4 4h11.2a1 1 0 01.9.8L20 8M9 13l2 2 4-4"/></svg>
+      Oggi
+    </button>
+    <button data-nav="andamento">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M4 19V5M4 19h16M7 15l3.5-4 3 2.5L18 8"/></svg>
+      Andamento
+    </button>
+    <button data-nav="strumenti">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M14.6 9.4L9.4 14.6M9.4 9.4l2.6 2.6"/></svg>
+      Strumenti
+    </button>
+    <button data-nav="piano">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 21s-7-4.6-7-10a7 7 0 0114 0c0 5.4-7 10-7 10zM9.5 11l2 2 3.5-3.5"/></svg>
+      Piano
+    </button>
+  </div>
+</nav>
+
+<div id="tooltip" role="status"></div>
+<div id="toast"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ───────────────────────── stato ─────────────────────────
+  const SKILLS = ["STOP", "Surf dell'impulso", "TIPP", "HALT", "Azione opposta", "Auto-compassione", "Ho chiamato qualcuno", "Attività fisica"];
+  const MOOD_DESC = {
+    "-3": "−3 · Depressione grave: quasi impossibile funzionare.",
+    "-2": "−2 · Depresso: tutto costa molta fatica.",
+    "-1": "−1 · Giù di tono, ma funzionante.",
+    "0":  "0 · Stabile: la zona in cui vuoi stare.",
+    "1":  "+1 · Su di tono, energie in aumento.",
+    "2":  "+2 · Molto attivato: euforia, mille idee, poco bisogno di pause.",
+    "3":  "+3 · Attivazione estrema: possibile mania."
+  };
+  const PLAN_DEFAULTS = {
+    segnali: "• Dormo meno di 5–6 ore e non sento stanchezza\n• Mille progetti tutti insieme, parlo più veloce del solito\n• Spendo o prometto più del solito\n• Mi isolo, smetto di rispondere ai messaggi\n• Il craving sale sopra 6 per più giorni di fila\n• Salto i farmaci «tanto sto bene»",
+    passi: "1. Lo scrivo nel check-in, senza giudicarmi\n2. Chiamo il mio psichiatra o il SerD entro 24 ore\n3. Proteggo il sonno: niente impegni serali, schermi spenti presto\n4. Blocco le decisioni importanti (soldi, relazioni, lavoro) per 72 ore\n5. Avviso una persona fidata con una frase concordata",
+    premi: "7 giorni puliti → una cena che mi piace davvero\n30 giorni → un acquisto che rimando da tempo\n90 giorni → un weekend fuori",
+    contatti: [
+      { nome: "Il mio psichiatra", tel: "" },
+      { nome: "SerD di zona", tel: "" },
+      { nome: "Persona fidata", tel: "" }
+    ]
+  };
+  const FIXED_CONTACTS = [
+    { nome: "Emergenza", tel: "112" },
+    { nome: "Telefono Amico Italia (10–24)", tel: "02 2327 2327" }
+  ];
+
+  const state = {
+    db: null,               // namespace db o null → localStorage
+    entries: new Map(),     // "YYYY-MM-DD" → entry
+    plan: null,
+    form: { mood: null, sleep: 7, craving: 0, uso: null, farmaci: null, skills: new Set(), nota: "" },
+    view: "oggi"
+  };
+
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
+  const pad = (n) => String(n).padStart(2, "0");
+  const keyOf = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const todayKey = () => keyOf(new Date());
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const fmtDay = (k) => { const [y, m, g] = k.split("-").map(Number); return new Date(y, m - 1, g).toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }); };
+
+  // ───────────────────────── persistenza ─────────────────────────
+  const LS_KEY = "larotta-entries", LS_PLAN = "larotta-plan";
+
+  function lsLoad() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+      Object.entries(raw).forEach(([k, v]) => state.entries.set(k, v));
+      const p = JSON.parse(localStorage.getItem(LS_PLAN) || "null");
+      if (p) state.plan = p;
+    } catch (e) { /* storage non disponibile: si riparte vuoti */ }
+  }
+  function lsSaveAll() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(Object.fromEntries(state.entries)));
+      if (state.plan) localStorage.setItem(LS_PLAN, JSON.stringify(state.plan));
+    } catch (e) { /* pieno o bloccato: il toast d'errore arriva dal chiamante db */ }
+  }
+
+  async function saveEntry(entry) {
+    state.entries.set(entry.date, entry);
+    if (state.db) {
+      try { await state.db.doc("checkins/" + entry.date).set(entry); }
+      catch (e) { lsSaveAll(); toast("Salvato solo su questo dispositivo"); return; }
+    } else lsSaveAll();
+  }
+  async function savePlan(plan) {
+    state.plan = plan;
+    if (state.db) {
+      try { await state.db.doc("piano/main").set(plan); }
+      catch (e) { lsSaveAll(); toast("Salvato solo su questo dispositivo"); return; }
+    } else lsSaveAll();
+  }
+
+  async function initStore() {
+    const db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+    if (!db) {
+      lsLoad();
+      $("#storage-note").classList.add("show");
+      refreshAll();
+      return;
+    }
+    state.db = db;
+    db.collection("checkins").orderBy("date", "desc").limit(120).onSnapshot(
+      (snap) => {
+        snap.docs.forEach((d) => { const v = d.data(); if (v && v.date) state.entries.set(v.date, v); });
+        snap.docChanges().forEach((c) => { if (c.type === "removed" && c.doc.data()) state.entries.delete(c.doc.data().date); });
+        refreshAll();
+      },
+      () => { lsLoad(); $("#storage-note").classList.add("show"); refreshAll(); }
+    );
+    db.doc("piano/main").onSnapshot((snap) => {
+      if (snap.exists) { state.plan = snap.data(); renderPlan(); renderCallList(); }
+    });
+  }
+
+  // ───────────────────────── intestazione ─────────────────────────
+  function renderHeader() {
+    const d = new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+    $("#hdr-date").textContent = d.charAt(0).toUpperCase() + d.slice(1);
+    const s = cleanStreak();
+    const chip = $("#streak-chip");
+    if (s >= 1) { chip.classList.add("show"); $("#streak-txt").textContent = s === 1 ? "1 giorno senza uso" : s + " giorni senza uso"; }
+    else chip.classList.remove("show");
+  }
+
+  function cleanStreak() {
+    let n = 0, d = new Date();
+    if (!state.entries.has(todayKey())) d = addDays(d, -1);
+    for (;;) {
+      const e = state.entries.get(keyOf(d));
+      if (!e || e.uso === "si") break;
+      n++; d = addDays(d, -1);
+    }
+    return n;
+  }
+  function checkinStreak() {
+    let n = 0, d = new Date();
+    if (!state.entries.has(todayKey())) d = addDays(d, -1);
+    while (state.entries.has(keyOf(d))) { n++; d = addDays(d, -1); }
+    return n;
+  }
+
+  // ───────────────────────── form Oggi ─────────────────────────
+  function buildForm() {
+    const row = $("#mood-row");
+    for (let v = -3; v <= 3; v++) {
+      const b = el("button", "mood-btn", v > 0 ? "+" + v : String(v));
+      b.type = "button"; b.dataset.v = v;
+      b.addEventListener("click", () => { state.form.mood = v; paintMood(); });
+      row.appendChild(b);
+    }
+    const chips = $("#chips-skill");
+    SKILLS.forEach((s) => {
+      const b = el("button", "", s); b.type = "button";
+      b.addEventListener("click", () => {
+        state.form.skills.has(s) ? state.form.skills.delete(s) : state.form.skills.add(s);
+        b.classList.toggle("sel");
+      });
+      chips.appendChild(b);
+    });
+    $("#sleep-minus").addEventListener("click", () => { state.form.sleep = Math.max(0, state.form.sleep - 0.5); paintSleep(); });
+    $("#sleep-plus").addEventListener("click", () => { state.form.sleep = Math.min(16, state.form.sleep + 0.5); paintSleep(); });
+    $("#craving").addEventListener("input", (e) => { state.form.craving = +e.target.value; paintCraving(); });
+    bindSeg("#seg-uso", (v) => state.form.uso = v, () => state.form.uso, "si");
+    bindSeg("#seg-farmaci", (v) => state.form.farmaci = v, () => state.form.farmaci, "no");
+    $("#nota").addEventListener("input", (e) => state.form.nota = e.target.value);
+    $("#btn-save").addEventListener("click", onSave);
+  }
+  function bindSeg(sel, set, get, warnVal) {
+    $(sel).querySelectorAll("button").forEach((b) => {
+      b.addEventListener("click", () => { set(b.dataset.v); paintSeg(sel, get(), warnVal); });
+    });
+  }
+  function paintSeg(sel, val, warnVal) {
+    $(sel).querySelectorAll("button").forEach((b) => {
+      b.classList.remove("sel", "sel-warn");
+      if (b.dataset.v === val) b.classList.add(val === warnVal ? "sel-warn" : "sel");
+    });
+  }
+  function paintMood() {
+    $("#mood-row").querySelectorAll("button").forEach((b) => {
+      b.classList.remove("sel-neg", "sel-pos", "sel-zero");
+      if (+b.dataset.v === state.form.mood) b.classList.add(state.form.mood < 0 ? "sel-neg" : state.form.mood > 0 ? "sel-pos" : "sel-zero");
+    });
+    $("#mood-desc").textContent = state.form.mood == null ? "Tocca il valore che descrive la giornata." : MOOD_DESC[String(state.form.mood)];
+  }
+  function paintSleep() { $("#sleep-val").textContent = (String(state.form.sleep).replace(".", ",")) + " h"; }
+  function paintCraving() {
+    const v = $("#craving-val"); v.textContent = state.form.craving;
+    v.classList.toggle("hot", state.form.craving >= 7);
+  }
+  function fillFormFromToday() {
+    const e = state.entries.get(todayKey());
+    $("#btn-save").textContent = e ? "Aggiorna la giornata" : "Registra la giornata";
+    $("#checkin-title").textContent = e ? "Check-in di oggi · registrato" : "Check-in di oggi";
+    if (!e) return;
+    state.form.mood = e.mood; state.form.sleep = e.sonno; state.form.craving = e.craving;
+    state.form.uso = e.uso; state.form.farmaci = e.farmaci; state.form.skills = new Set(e.skills || []);
+    state.form.nota = e.nota || "";
+    paintMood(); paintSleep(); $("#craving").value = e.craving; paintCraving();
+    paintSeg("#seg-uso", e.uso, "si"); paintSeg("#seg-farmaci", e.farmaci, "no");
+    $("#chips-skill").querySelectorAll("button").forEach((b) => b.classList.toggle("sel", state.form.skills.has(b.textContent)));
+    $("#nota").value = state.form.nota;
+  }
+
+  async function onSave() {
+    const f = state.form;
+    if (f.mood == null) { toast("Manca l'umore: è il dato che conta di più"); return; }
+    const entry = {
+      date: todayKey(), mood: f.mood, sonno: f.sleep, craving: f.craving,
+      uso: f.uso || "no", farmaci: f.farmaci || "si",
+      skills: [...f.skills], nota: f.nota.trim(), aggiornatoIl: new Date().toISOString()
+    };
+    await saveEntry(entry);
+    toast("Registrato");
+    refreshAll();
+  }
+
+  // ───────────────────────── avvisi (segnali precoci) ─────────────────────────
+  function computeAlerts() {
+    const out = [];
+    const t = state.entries.get(todayKey());
+    const last = (n) => {
+      const a = []; let d = new Date();
+      for (let i = 0; i < n; i++) { const e = state.entries.get(keyOf(d)); if (e) a.push(e); d = addDays(d, -1); }
+      return a;
+    };
+    if (t) {
+      if (t.sonno <= 5 && t.mood >= 1) out.push({
+        cls: "danger", t: "Sonno ridotto con umore in salita",
+        m: "È la combinazione che più spesso precede un episodio di attivazione. Proteggi il sonno stanotte e avvisa oggi il tuo psichiatra — non aspettare che passi da sé."
+      });
+      else if (t.sonno <= 5) out.push({
+        cls: "warn", t: "Hai dormito poco",
+        m: "Nel disturbo bipolare il sonno è un farmaco: stasera niente impegni tardivi, sveglia domani alla solita ora."
+      });
+      if (t.craving >= 7) out.push({
+        cls: "warn", t: "Craving alto",
+        m: "Un craving così forte in genere scende da solo entro 20 minuti se non lo alimenti. Apri «Surf dell'impulso» negli Strumenti, e se non basta chiama uno dei tuoi contatti dal Piano."
+      });
+      if (t.uso === "si") out.push({
+        cls: "warn", t: "Hai registrato un uso",
+        m: "Averlo scritto è la cosa giusta: un episodio è un dato, non una condanna, e la vergogna è il carburante della ricaduta successiva. Guarda cosa l'ha preceduto (sonno? umore? un trigger?) e riparti dal prossimo check-in."
+      });
+      if (t.farmaci === "no") out.push({
+        cls: "warn", t: "Farmaci saltati",
+        m: "L'interruzione dei farmaci è la prima causa di ricaduta. Se stai pensando di sospenderli, decidilo con il tuo psichiatra, mai da solo."
+      });
+    }
+    const l3 = last(4).filter((e) => e.date !== todayKey()).slice(0, 3);
+    if (l3.length === 3 && l3.every((e) => e.mood <= -2)) out.push({
+      cls: "danger", t: "Tre giorni consecutivi di umore molto basso",
+      m: "Non è un momento da attraversare da solo: contatta chi ti cura. Se compaiono pensieri di farti del male, chiama subito il 112 o il Telefono Amico (02 2327 2327)."
+    });
+    if (!out.length && t) out.push({ cls: "ok", t: "Nessun segnale d'allarme oggi", m: "Rotta mantenuta. Il check-in di domani vale quanto quello di oggi." });
+    return out;
+  }
+  function renderAlerts() {
+    const box = $("#alerts"); box.textContent = "";
+    computeAlerts().forEach((a) => {
+      const d = el("div", "alert " + a.cls);
+      d.appendChild(el("strong", "", a.t));
+      d.appendChild(document.createTextNode(a.m));
+      box.appendChild(d);
+    });
+  }
+
+  // ───────────────────────── grafici ─────────────────────────
+  const SVGNS = "http://www.w3.org/2000/svg";
+  function sv(tag, attrs) { const n = document.createElementNS(SVGNS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); return n; }
+  function windowDays(n) {
+    const out = []; let d = addDays(new Date(), -(n - 1));
+    for (let i = 0; i < n; i++) { const k = keyOf(d); out.push({ k, e: state.entries.get(k) || null }); d = addDays(d, 1); }
+    return out;
+  }
+  const tooltip = $("#tooltip");
+  function tipShow(evt, html) {
+    tooltip.textContent = html; tooltip.style.display = "block";
+    const x = Math.min(evt.clientX + 12, window.innerWidth - 180);
+    tooltip.style.left = x + "px"; tooltip.style.top = (evt.clientY - 40) + "px";
+  }
+  function tipHide() { tooltip.style.display = "none"; }
+  function hit(cx, cy, label) {
+    const h = sv("circle", { cx, cy, r: 13, fill: "transparent" });
+    h.addEventListener("pointerenter", (e) => tipShow(e, label));
+    h.addEventListener("pointermove", (e) => tipShow(e, label));
+    h.addEventListener("pointerleave", tipHide);
+    return h;
+  }
+
+  function chartMood() {
+    const box = $("#chart-mood"); box.textContent = "";
+    const days = windowDays(30), have = days.filter((d) => d.e);
+    if (!have.length) { box.appendChild(el("div", "empty-note", "I grafici si disegnano da soli, un check-in alla volta.")); return; }
+    const W = 640, H = 210, L = 34, R = 10, T = 12, B = 26;
+    const x = (i) => L + i * (W - L - R) / 29;
+    const y = (v) => T + (3 - v) * (H - T - B) / 6;
+    const svg = sv("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Umore degli ultimi 30 giorni" });
+    svg.appendChild(sv("rect", { x: L, y: y(1), width: W - L - R, height: y(-1) - y(1), class: "band-eu", rx: 3 }));
+    [-3, -2, -1, 0, 1, 2, 3].forEach((v) => {
+      if (v === 0) svg.appendChild(sv("line", { x1: L, x2: W - R, y1: y(0), y2: y(0), class: "ax" }));
+      const t = sv("text", { x: L - 7, y: y(v) + 4, "text-anchor": "end", class: "ax-lbl" + (v === 0 ? " strong" : "") });
+      t.textContent = v > 0 ? "+" + v : v; svg.appendChild(t);
+    });
+    days.forEach((d, i) => {
+      if (i % 7 === 0) {
+        const t = sv("text", { x: x(i), y: H - 8, "text-anchor": "middle", class: "ax-lbl" });
+        t.textContent = d.k.slice(8) + "/" + d.k.slice(5, 7); svg.appendChild(t);
+      }
+    });
+    let path = "", prevIdx = null;
+    days.forEach((d, i) => {
+      if (!d.e) return;
+      const cmd = (prevIdx !== null && i - prevIdx === 1) ? "L" : "M";
+      path += `${cmd}${x(i).toFixed(1)},${y(d.e.mood).toFixed(1)} `;
+      prevIdx = i;
+    });
+    svg.appendChild(sv("path", { d: path, class: "mood-line" }));
+    days.forEach((d, i) => {
+      if (!d.e) return;
+      const cls = d.e.mood < 0 ? "neg" : d.e.mood > 0 ? "pos" : "zero";
+      svg.appendChild(sv("circle", { cx: x(i), cy: y(d.e.mood), r: 4.5, class: "pt " + cls }));
+      svg.appendChild(hit(x(i), y(d.e.mood), `${fmtDay(d.k)} · umore ${d.e.mood > 0 ? "+" : ""}${d.e.mood}`));
+    });
+    box.appendChild(svg);
+  }
+
+  function chartSleep() {
+    const box = $("#chart-sleep"); box.textContent = "";
+    const days = windowDays(14), have = days.filter((d) => d.e);
+    if (!have.length) { box.appendChild(el("div", "empty-note", "Ancora nessuna notte registrata.")); return; }
+    const W = 640, H = 190, L = 34, R = 10, T = 12, B = 26;
+    const maxH = Math.max(10, ...have.map((d) => d.e.sonno));
+    const bw = (W - L - R) / 14;
+    const y = (v) => T + (maxH - v) * (H - T - B) / maxH;
+    const svg = sv("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Ore di sonno delle ultime 14 notti" });
+    [0, 5, Math.round(maxH)].forEach((v) => {
+      const t = sv("text", { x: L - 7, y: y(v) + 4, "text-anchor": "end", class: "ax-lbl" });
+      t.textContent = v + "h"; svg.appendChild(t);
+    });
+    svg.appendChild(sv("line", { x1: L, x2: W - R, y1: y(0), y2: y(0), class: "ax" }));
+    svg.appendChild(sv("line", { x1: L, x2: W - R, y1: y(7), y2: y(7), class: "refline" }));
+    const rl = sv("text", { x: W - R, y: y(7) - 5, "text-anchor": "end", class: "ax-lbl" }); rl.textContent = "obiettivo 7h"; svg.appendChild(rl);
+    days.forEach((d, i) => {
+      const cx = L + i * bw + bw / 2;
+      if (i % 2 === 0) {
+        const t = sv("text", { x: cx, y: H - 8, "text-anchor": "middle", class: "ax-lbl" });
+        t.textContent = d.k.slice(8) + "/" + d.k.slice(5, 7); svg.appendChild(t);
+      }
+      if (!d.e) return;
+      const h = Math.max(6, y(0) - y(d.e.sonno));
+      svg.appendChild(sv("path", {
+        class: "bar" + (d.e.sonno <= 5 ? " low" : ""),
+        d: `M${(cx - bw / 2 + 3).toFixed(1)},${y(0)} v${-(h - 4)} q0,-4 4,-4 h${(bw - 14).toFixed(1)} q4,0 4,4 v${h - 4} z`
+      }));
+      svg.appendChild(hit(cx, y(d.e.sonno), `${fmtDay(d.k)} · ${String(d.e.sonno).replace(".", ",")} ore`));
+    });
+    box.appendChild(svg);
+  }
+
+  function chartCraving() {
+    const box = $("#chart-craving"); box.textContent = "";
+    const days = windowDays(30), have = days.filter((d) => d.e);
+    if (!have.length) { box.appendChild(el("div", "empty-note", "Ancora nessun dato sul craving.")); return; }
+    const W = 640, H = 190, L = 34, R = 10, T = 12, B = 26;
+    const x = (i) => L + i * (W - L - R) / 29;
+    const y = (v) => T + (10 - v) * (H - T - B) / 10;
+    const svg = sv("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Craving degli ultimi 30 giorni" });
+    [0, 5, 10].forEach((v) => {
+      const t = sv("text", { x: L - 7, y: y(v) + 4, "text-anchor": "end", class: "ax-lbl" });
+      t.textContent = v; svg.appendChild(t);
+    });
+    svg.appendChild(sv("line", { x1: L, x2: W - R, y1: y(0), y2: y(0), class: "ax" }));
+    svg.appendChild(sv("line", { x1: L, x2: W - R, y1: y(7), y2: y(7), class: "refline" }));
+    const rl = sv("text", { x: W - R, y: y(7) - 5, "text-anchor": "end", class: "ax-lbl" }); rl.textContent = "alto rischio"; svg.appendChild(rl);
+    days.forEach((d, i) => {
+      if (i % 7 === 0) {
+        const t = sv("text", { x: x(i), y: H - 8, "text-anchor": "middle", class: "ax-lbl" });
+        t.textContent = d.k.slice(8) + "/" + d.k.slice(5, 7); svg.appendChild(t);
+      }
+    });
+    let path = "", prevIdx = null;
+    days.forEach((d, i) => {
+      if (!d.e) return;
+      const cmd = (prevIdx !== null && i - prevIdx === 1) ? "L" : "M";
+      path += `${cmd}${x(i).toFixed(1)},${y(d.e.craving).toFixed(1)} `;
+      prevIdx = i;
+    });
+    svg.appendChild(sv("path", { d: path, class: "crav-line" }));
+    days.forEach((d, i) => {
+      if (!d.e) return;
+      if (d.e.uso === "si") svg.appendChild(sv("circle", { cx: x(i), cy: y(d.e.craving), r: 5.5, class: "use-pt" }));
+      else svg.appendChild(sv("circle", { cx: x(i), cy: y(d.e.craving), r: 3.5, class: "crav-pt" }));
+      svg.appendChild(hit(x(i), y(d.e.craving), `${fmtDay(d.k)} · craving ${d.e.craving}${d.e.uso === "si" ? " · uso" : ""}`));
+    });
+    box.appendChild(svg);
+  }
+
+  function renderStats() {
+    const s = cleanStreak();
+    $("#t-streak").textContent = s;
+    const last7 = windowDays(7).filter((d) => d.e);
+    $("#t-sonno").textContent = last7.length ? (last7.reduce((a, d) => a + d.e.sonno, 0) / last7.length).toFixed(1).replace(".", ",") + " h" : "–";
+    const last30 = windowDays(30).filter((d) => d.e);
+    $("#t-farmaci").textContent = last30.length ? Math.round(100 * last30.filter((d) => d.e.farmaci === "si").length / last30.length) + "%" : "–";
+    $("#t-checkin").textContent = checkinStreak();
+  }
+
+  // ───────────────────────── piano ─────────────────────────
+  function planOrDefaults() {
+    return state.plan || JSON.parse(JSON.stringify(PLAN_DEFAULTS));
+  }
+  function renderPlan() {
+    const p = planOrDefaults();
+    $("#p-segnali").value = p.segnali || "";
+    $("#p-passi").value = p.passi || "";
+    $("#p-premi").value = p.premi || "";
+    const rows = $("#contact-rows"); rows.textContent = "";
+    (p.contatti || []).forEach((c) => addContactRow(c.nome, c.tel));
+  }
+  function addContactRow(nome = "", tel = "") {
+    const row = el("div", "contact-row");
+    const iN = el("input"); iN.type = "text"; iN.placeholder = "Nome"; iN.value = nome;
+    const iT = el("input"); iT.type = "tel"; iT.placeholder = "Telefono"; iT.value = tel;
+    const del = el("button", "", "✕"); del.type = "button"; del.setAttribute("aria-label", "Rimuovi contatto");
+    del.addEventListener("click", () => row.remove());
+    row.append(iN, iT, del);
+    $("#contact-rows").appendChild(row);
+  }
+  function renderCallList() {
+    const p = planOrDefaults();
+    const list = $("#call-list"); list.textContent = "";
+    const all = FIXED_CONTACTS.concat((p.contatti || []).filter((c) => c.tel));
+    all.forEach((c) => {
+      const a = el("a"); a.href = "tel:" + c.tel.replace(/\s/g, "");
+      a.appendChild(el("span", "", c.nome));
+      a.appendChild(el("span", "tel", c.tel));
+      list.appendChild(a);
+    });
+  }
+  async function onSavePlan() {
+    const contatti = [...$("#contact-rows").querySelectorAll(".contact-row")].map((r) => {
+      const [n, t] = r.querySelectorAll("input");
+      return { nome: n.value.trim(), tel: t.value.trim() };
+    }).filter((c) => c.nome);
+    await savePlan({
+      segnali: $("#p-segnali").value, passi: $("#p-passi").value,
+      premi: $("#p-premi").value, contatti, aggiornatoIl: new Date().toISOString()
+    });
+    renderCallList();
+    toast("Piano salvato");
+  }
+
+  // ───────────────────────── navigazione, toast ─────────────────────────
+  function show(view) {
+    state.view = view;
+    document.querySelectorAll("main section[data-view]").forEach((s) => s.hidden = s.dataset.view !== view);
+    document.querySelectorAll("nav.tabbar button").forEach((b) => b.classList.toggle("active", b.dataset.nav === view));
+    if (view === "andamento") { renderStats(); chartMood(); chartSleep(); chartCraving(); }
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("nav.tabbar button").forEach((b) => b.addEventListener("click", () => show(b.dataset.nav)));
+
+  let toastTimer = null;
+  function toast(msg) {
+    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+  }
+
+  function refreshAll() {
+    renderHeader(); renderAlerts(); fillFormFromToday();
+    if (state.view === "andamento") { renderStats(); chartMood(); chartSleep(); chartCraving(); }
+    renderCallList();
+    if (!state.plan) renderPlan();
+  }
+
+  // ───────────────────────── avvio ─────────────────────────
+  buildForm(); paintSleep(); paintCraving(); renderPlan(); renderCallList(); renderHeader(); renderAlerts();
+  $("#btn-save-plan").addEventListener("click", onSavePlan);
+  $("#btn-add-contact").addEventListener("click", () => addContactRow());
+  initStore();
+})();
+</script>
