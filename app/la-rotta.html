@@ -213,7 +213,7 @@
 
   /* SVG tokens */
   .ax { stroke: var(--line); stroke-width: 1; }
-  .ax-lbl { fill: var(--ink-3); font-size: 11px; font-family: "Source Sans 3", sans-serif; }
+  .ax-lbl { fill: var(--ink-3); font-size: 13px; font-family: "Source Sans 3", sans-serif; }
   .ax-lbl.strong { fill: var(--ink-2); font-weight: 600; }
   .band-eu { fill: var(--accent-soft); }
   .mood-line { stroke: var(--neutro); stroke-width: 2; fill: none; stroke-linecap: round; }
@@ -880,7 +880,7 @@
       t.textContent = v > 0 ? "+" + v : v; svg.appendChild(t);
     });
     days.forEach((d, i) => {
-      if (i % 7 === 0 || i === 29) {
+      if (i % 7 === 0) {
         const t = sv("text", { x: x(i), y: H - 8, "text-anchor": "middle", class: "ax-lbl" });
         t.textContent = d.k.slice(8) + "/" + d.k.slice(5, 7); svg.appendChild(t);
       }
@@ -951,7 +951,7 @@
     svg.appendChild(sv("line", { x1: L, x2: W - R, y1: y(7), y2: y(7), class: "refline" }));
     const rl = sv("text", { x: W - R, y: y(7) - 5, "text-anchor": "end", class: "ax-lbl" }); rl.textContent = "alto rischio"; svg.appendChild(rl);
     days.forEach((d, i) => {
-      if (i % 7 === 0 || i === 29) {
+      if (i % 7 === 0) {
         const t = sv("text", { x: x(i), y: H - 8, "text-anchor": "middle", class: "ax-lbl" });
         t.textContent = d.k.slice(8) + "/" + d.k.slice(5, 7); svg.appendChild(t);
       }
