@@ -24,7 +24,7 @@ La stessa skill gira su superfici con capacità diverse. Prima di cercare, guard
 | Superficie | Ricerca web | Lettura pagine | Connettori MCP | Shell/script | Note |
 |---|---|---|---|---|---|
 | Claude Code (locale) | `WebSearch` | `WebFetch`, `curl` | quelli configurati dall'utente | sì | rete di norma aperta |
-| Claude Code (web/remoto) | `WebSearch` | `WebFetch` **spesso bloccato** da proxy di rete; anche `curl` passa dal proxy | quelli del progetto (es. PubMed, Consensus) | sì | i connettori MCP passano per canali autenticati e di norma funzionano anche quando il fetch è bloccato |
+| Claude Code (web/remoto) | `WebSearch` | `WebFetch` **spesso bloccato** da proxy di rete (`EGRESS_BLOCKED`); anche `curl` passa dal proxy (`CONNECT 403`) e il blocco colpisce pure le API pubbliche (E-utilities, Crossref, ClinicalTrials.gov, Europe PMC) | quelli del progetto (es. PubMed, Consensus) | sì | i connettori MCP passano per canali autenticati e di norma funzionano anche quando il fetch è bloccato: pianifica su di essi |
 | claude.ai (chat) | `web_search` | `web_fetch` | connettori attivati dall'utente | code execution se attiva | serve la ricerca web abilitata |
 | Cowork | come claude.ai | come claude.ai | connettori dell'app | sì | filesystem locale |
 
@@ -37,7 +37,7 @@ Se non hai **né** ricerca web **né** connettori, la skill non può verificare 
 ## 2. WebSearch — cosa restituisce davvero
 
 - Restituisce **link + snippet sintetizzati**, e talvolta un riassunto pre-digerito con numeri dentro. Quel riassunto è prodotto da un modello, non è la fonte: **serve a scegliere cosa aprire, non a citare**. Un numero letto solo in uno snippet non è citabile; se non riesci ad aprire la fonte, il dato resta «non verificato».
-- `allowed_domains` limita i risultati, ma il matching avviene sul **dominio registrabile**: chiedendo `pubmed.ncbi.nlm.nih.gov` puoi ricevere anche `ncbi.nlm.nih.gov/pmc` o altre proprietà NCBI. Controlla che ogni risultato appartenga al livello che stavi interrogando.
+- `allowed_domains` è un filtro **non garantito**: il matching avviene sul **dominio registrabile** (chiedendo `pubmed.ncbi.nlm.nih.gov` puoi ricevere `ncbi.nlm.nih.gov/pmc`), e in alcune chiamate i risultati arrivano interamente da domini non richiesti (è stato osservato con NICE/WHO/SIGN richiesti e PMC/medRxiv/USPTO restituiti). Controlla ogni risultato; se nessuno appartiene ai domini richiesti, la ricerca per quel livello è fallita: ripetila mettendo il nome dell'ente nel testo della query («NICE guideline depression omega-3») o passa ai connettori.
 - Passa liste di domini **brevi e omogenee per livello** (5–10 domini per chiamata): liste lunghe diluiscono la ricerca. Per L0 sanitario, ad esempio: `cochranelibrary.com, who.int, nice.org.uk, uspreventiveservicestaskforce.org, effectivehealthcare.ahrq.gov, snlg.iss.it`.
 - Le query in **inglese** rendono molto di più; per le fonti italiane (ISS, AIFA) usa l'italiano.
 - La ricerca è orientata agli Stati Uniti: per fonti europee o italiane vincola i domini.
@@ -64,7 +64,7 @@ Quando è presente, è il canale più affidabile per L0 sanitario (via abstract 
 |---|---|---|
 | `search_articles` | Ricerca con sintassi PubMed (campi, MeSH, booleani, `[pt]`, date) | Fase 2, per ogni quesito biomedico |
 | `get_article_metadata` | Titolo, abstract completo, autori con affiliazioni, rivista, date, MeSH, `article_types`, PMCID, DOI | Fase 3 (lettura dell'abstract) e Fase 4: `article_types` contiene «Retracted Publication» se ritrattato; il PMCID dice se il full text è libero |
-| `get_full_text_article` | Full text degli articoli in PMC open access | Fase 3–4: metodi, Funding, Competing interests, tabelle |
+| `get_full_text_article` | Full text degli articoli in PMC open access **quando depositato**: per le revisioni Cochrane, per gli articoli sotto embargo e per le lettere il campo `full_text` torna vuoto (solo abstract, talvolta PLS) | Fase 3–4: metodi, Funding, Competing interests, tabelle. Un `full_text` vuoto è un canale fallito: passa a WebFetch su PMC/editore; se bloccato, dichiara «letto: abstract (+PLS)» |
 | `find_related_articles` | Articoli correlati | Allargare la ricerca quando i risultati sono pochi |
 | `lookup_article_by_citation` | Da una citazione testuale al record | Verificare citazioni che l'utente ha incollato |
 | `convert_article_ids` | PMID ↔ PMCID ↔ DOI | Costruire link corretti |
@@ -73,6 +73,8 @@ Quando è presente, è il canale più affidabile per L0 sanitario (via abstract 
 Obbligo di attribuzione del connettore: ogni uso va dichiarato («secondo PubMed…») e ogni articolo citato porta il DOI come link. Questi obblighi si integrano nella scheda (riga Link, elenco Fonti); non la sostituiscono.
 
 Il connettore copre **solo biomedicina e scienze della vita**: per fisica, informatica, economia, scienze sociali non mediche usa gli altri canali.
+
+Limiti verificati: `get_article_metadata` espone `article_types`, MeSH, PMCID e DOI, ma **non** i collegamenti «Comment in», «Update in», «Retraction in», «Erratum in» del record PubMed. Per quei controlli usa una ricerca mirata via connettore (`"<parole del titolo>"[ti] AND (comment[pt] OR letter[pt] OR retraction of publication[pt])`, oppure il titolo con `[ti]` ordinato per data per gli aggiornamenti); la pagina web del record e le E-utilities (`elink.fcgi`) li mostrano, ma solo se la rete le lascia passare. Richiedi i metadati a lotti di al massimo 8 PMID: risposte più grandi vengono salvate su file e richiedono letture aggiuntive.
 
 ---
 
@@ -119,11 +121,14 @@ La skill può incontrare connettori per ClinicalTrials.gov, ChEMBL, bioRxiv, Ope
 
 ## 9. Budget di chiamate per modalità
 
+Conta come «chiamata» ogni invocazione di uno strumento: ricerca, metadati, fetch, script, e anche le letture da shell delle risposte grandi salvate su file. I tetti sono un piano da dichiarare, non un limite da superare in silenzio.
+
 | Modalità | Ricerche | Letture | Controlli | Tetto indicativo totale |
 |---|---|---|---|---|
-| Rapida | 1–2 | 1–2 | ritrattazione + attualità | ~5 chiamate |
-| Completa, quesito singolo | 3–6 (discesa L0→L1, più L2 se serve) | 3–8 | tutti quelli eseguibili | ~15–20 chiamate |
-| Completa, testo multi-affermazione | per ciascuna delle 5–7 affermazioni prioritarie, come sopra in versione ridotta | | | dichiara il tetto e cosa è rimasto fuori |
+| Rapida | 1–2 | 1–2 | ritrattazione + attualità | ~5–8 chiamate |
+| Completa, quesito singolo | 3–6 (discesa L0→L1, più L2 se serve) | 3–8 (lotti ≤ 8 PMID) | tutti quelli eseguibili | ~20–30 chiamate |
+| Completa, affermazione sdoppiata su più popolazioni o esiti, oppure con linee guida | come sopra per ciascun sotto-quesito | | | ~40–60 chiamate, dichiarate |
+| Completa, testo multi-affermazione | per ciascuna delle 5–7 affermazioni prioritarie, versione ridotta | | | dichiara il tetto e cosa è rimasto fuori |
 
 Criterio di arresto: fermati quando (a) hai una fonte L0 pertinente e aggiornata che risponde, oppure (b) hai due fonti L1 indipendenti concordi, oppure (c) hai esaurito il budget: in quel caso la sezione «Che cosa non sappiamo» dice cosa non hai potuto cercare. Continuare a cercare finché si trova la risposta desiderata è una forma di bias: dichiara il piano prima e rispettalo.
 

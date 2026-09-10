@@ -23,7 +23,8 @@ Esempi
   python3 effetti.py table --ei 128 --ni 419 --ec 100 --nc 423
   python3 effetti.py relative --measure OR --value 0.31 --ci 0.20 0.48 --baseline 0.45
   python3 effetti.py relative --measure RR --value 0.97 --ci 0.94 1.00 --baseline 0.60
-  python3 effetti.py nnt --arr 0.15 --ci 0.05 0.25
+  python3 effetti.py nnt --arr -0.15 --ci -0.25 -0.05     (--arr = intervento − controllo)
+  python3 effetti.py relative --measure RR --value 1.2 --ci 1.05 1.37 --baseline 0.30 --event desirable
   python3 effetti.py smd --value 0.45
   Aggiungi --json per un output leggibile da macchina.
 
@@ -67,17 +68,24 @@ def _nnt_from_diff(diff, lo, hi):
 
 
 def _label_direction(diff, event):
-    """Spiega cosa significa il segno della differenza a seconda che l'evento
-    sia indesiderato (default: morte, ricaduta, effetto avverso, fallimento)
-    o desiderato (guarigione, risposta)."""
+    """Spiega cosa significa il segno della differenza. Se `event` non è indicato,
+    stampa entrambe le letture: la stessa differenza è un beneficio se l'evento
+    è indesiderato (morte, ricaduta, effetto avverso, fallimento) e un danno se
+    è desiderato (remissione, risposta, guarigione), e viceversa."""
     if diff == 0:
         return "nessuna differenza"
     reduces = diff < 0
+    und = ("l'intervento RIDUCE l'evento → beneficio, NNTB" if reduces
+           else "l'intervento AUMENTA l'evento → danno, NNTH")
+    des = ("l'intervento RIDUCE l'evento desiderato → danno, NNTH" if reduces
+           else "l'intervento AUMENTA l'evento desiderato → beneficio, NNTB")
     if event == "undesirable":
-        return ("l'intervento RIDUCE l'evento → beneficio, NNTB" if reduces
-                else "l'intervento AUMENTA l'evento → danno, NNTH")
-    return ("l'intervento RIDUCE l'evento desiderato → danno, NNTH" if reduces
-            else "l'intervento AUMENTA l'evento desiderato → beneficio, NNTB")
+        return und
+    if event == "desirable":
+        return des
+    return ("se l'evento è INDESIDERATO (morte, ricaduta, effetto avverso, fallimento): " + und +
+            " · se l'evento è DESIDERATO (remissione, risposta, guarigione): " + des +
+            " — specifica --event undesirable|desirable per una sola lettura")
 
 
 def mode_table(args):
@@ -246,15 +254,16 @@ def main():
     t.add_argument("--ni", type=int, required=True, help="totale nel gruppo intervento")
     t.add_argument("--ec", type=int, required=True, help="eventi nel gruppo controllo")
     t.add_argument("--nc", type=int, required=True, help="totale nel gruppo controllo")
-    t.add_argument("--event", choices=["undesirable", "desirable"], default="undesirable",
-                   help="l'evento contato è indesiderato (default) o desiderato")
+    t.add_argument("--event", choices=["undesirable", "desirable"], default=None,
+                   help="l'evento contato è indesiderato o desiderato; se omesso, stampa entrambe le letture")
 
     r = sub.add_parser("relative", help="da RR/OR/HR + rischio di base")
     r.add_argument("--measure", choices=["RR", "OR", "HR"], required=True)
     r.add_argument("--value", type=float, required=True)
     r.add_argument("--ci", type=float, nargs=2, metavar=("LO", "HI"))
     r.add_argument("--baseline", type=float, required=True, help="rischio nel gruppo di controllo (0-1)")
-    r.add_argument("--event", choices=["undesirable", "desirable"], default="undesirable")
+    r.add_argument("--event", choices=["undesirable", "desirable"], default=None,
+                   help="se omesso, stampa entrambe le letture")
 
     n = sub.add_parser("nnt", help="da una differenza assoluta di rischio")
     n.add_argument("--arr", type=float, required=True, help="differenza assoluta (intervento - controllo), es. -0.15")

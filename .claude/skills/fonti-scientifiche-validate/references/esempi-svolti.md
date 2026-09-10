@@ -26,7 +26,7 @@ Partenza da L0 (Cochrane) via connettore PubMed, perché il fetch verso cochrane
 Query: `vitamin C common cold AND (systematic review[pt] OR meta-analysis[pt])`, ordinata per data → 19 risultati; tra i primi la revisione Cochrane (2013) e una meta-analisi del 2023 dello stesso gruppo.
 
 ### Fase 3 — Recupero
-Metadati e abstract via `get_article_metadata` per PMID 23440782 (Cochrane 2013) e PMID 38082300 (BMC Public Health 2023). Letto: abstract di entrambe; full text disponibile in PMC (PMC8078152, PMC10712193) ma non consultato in questo esempio: i controlli che richiedono il full text risultano «non verificati».
+Metadati e abstract via `get_article_metadata` per PMID 23440782 (Cochrane 2013) e PMID 38082300 (BMC Public Health 2023). Letto: abstract di entrambe. Il PMCID esiste per entrambe (PMC8078152, PMC10712193), ma per le revisioni Cochrane il record PMC contiene di norma solo abstract e Plain Language Summary (il full text via connettore torna vuoto); il full text della meta-analisi 2023 non è stato consultato in questo esempio. I controlli che richiedono il full text risultano «non verificati».
 
 ### Fase 4 — Controlli
 - Ritrattazioni: `article_types` = «Systematic Review, Meta-Analysis» per la Cochrane, «Meta-Analysis, Review» per la 2023 → nessuna ritrattazione: **superato**.

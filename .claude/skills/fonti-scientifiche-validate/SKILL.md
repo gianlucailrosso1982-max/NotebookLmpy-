@@ -55,12 +55,12 @@ Per quesiti clinici e comportamentali usa PICO (Popolazione, Intervento, Confron
 
 **Fase 2 — Discesa gerarchica.**
 Parti dal livello più alto pertinente per il tipo di quesito (tabella in `gerarchia-fonti.md` §1) e scendi solo se non trovi risposta; per affermazioni controverse cerca comunque conferma incrociata su due fonti indipendenti (non dello stesso gruppo di autori). Usa i connettori quando esistono e `allowed_domains` di WebSearch per vincolare la ricerca al livello che interroghi. Non partire mai dal web aperto. Due avvertenze verificate sul campo:
-- `allowed_domains` filtra sul dominio registrabile, non sul sottodominio: controlla che ogni risultato appartenga davvero al livello che volevi.
+- `allowed_domains` è un filtro **non garantito**: opera sul dominio registrabile e, in alcune chiamate, i risultati arrivano interamente da domini non richiesti. Controlla ogni risultato; se nessuno appartiene ai domini richiesti, la ricerca per quel livello è fallita: ripetila mettendo il nome dell'ente nella query o passa ai connettori.
 - **Gli snippet dei risultati di ricerca servono a scegliere cosa aprire, mai a citare.** Contengono numeri pre-digeriti da un modello: non sono lettura della fonte. Un numero è citabile solo dopo la Fase 3.
 Se la prima query restituisce rumore, calibrala (§5 di `strategie-di-ricerca.md`) prima di concludere che non esistono sintesi.
 
 **Fase 3 — Recupero del testo, con fallback a cascata.**
-Fermati al primo canale che funziona: (1) connettori MCP attivi in questa sessione (verificane l'esistenza: spesso ci sono solo PubMed e Consensus, e i connettori PubMed leggono anche gli abstract completi delle revisioni Cochrane); (2) WebFetch sull'URL della fonte; (3) se entrambi falliscono, il documento è **non letto**: puoi elencarlo come «da approfondire», ma nessun suo dato è citabile e i controlli risultano «non verificati (accesso bloccato)». In ambienti con proxy di rete restrittivo il fetch fallisce su quasi tutti i domini scientifici: non è un tuo errore, è un limite da dichiarare. Leggi almeno l'abstract completo e, quando accessibile, metodi, risultati numerici, finanziamento. Annota per ogni fonte cosa hai letto (abstract / full text). → `strumenti-e-fallback.md` §7.
+Fermati al primo canale che funziona: (1) connettori MCP attivi in questa sessione (verificane l'esistenza: spesso ci sono solo PubMed e Consensus, e i connettori PubMed leggono anche gli abstract completi delle revisioni Cochrane); (2) WebFetch sull'URL della fonte; (3) se entrambi falliscono, il documento è **non letto**: puoi elencarlo come «da approfondire», ma nessun suo dato è citabile e i controlli risultano «non verificati (accesso bloccato)». In ambienti con proxy di rete restrittivo il fetch fallisce su quasi tutti i domini scientifici: non è un tuo errore, è un limite da dichiarare. Un connettore che risponde ma restituisce il full text **vuoto** conta come canale fallito: passa al successivo. Per le revisioni Cochrane, PMC contiene di norma solo abstract e Plain Language Summary (che però riporta numeri assoluti e certezza per outcome): usali e dichiara «letto: abstract + PLS». Richiedi i metadati a lotti di al massimo 8 PMID: le risposte grandi finiscono su file e costano letture aggiuntive. Leggi almeno l'abstract completo e, quando accessibile, metodi, risultati numerici, finanziamento. Annota per ogni fonte cosa hai letto (abstract / abstract + PLS / full text). → `strumenti-e-fallback.md` §7.
 
 **Fase 4 — Controllo qualità prima di citare.**
 Per ogni studio: ritrattazioni, segnalazioni post-pubblicazione, legittimità della rivista, conflitti di interesse, corrispondenza col protocollo registrato, coerenza interna dei numeri, attualità. Ogni controllo ha tre esiti — **superato / fallito / non verificato (strumento non accessibile)** — e va riportato con lo strumento usato. Salta questa fase solo per documenti istituzionali di livello L0, per i quali restano attualità e conflitti. → sezione 7 e `controllo-qualita.md`.
@@ -79,7 +79,7 @@ Il livello descrive la fonte, non il dato. Elenco completo, accessi reali, API e
 
 | Livello | Che cosa | Fonti principali | Nota operativa |
 |---|---|---|---|
-| **L0** | Sintesi critiche, revisioni sistematiche valutate, linee guida istituzionali | Cochrane, Epistemonikos, WHO, NICE, USPSTF, AHRQ, Campbell (scienze sociali), JBI, INAHTA, ISS/SNLG, CDC/ECDC, EMA/AIFA/FDA, EFSA, IARC, IPCC, NASEM | Ogni revisione Cochrane è su PubMed con l'abstract completo, risultati numerici e spesso la certezza GRADE: cercala lì quando il sito è bloccato (`"Cochrane Database Syst Rev"[journal]`) |
+| **L0** | Sintesi critiche, revisioni sistematiche valutate, linee guida istituzionali; linee guida di società scientifiche **solo se** con metodo di ricerca e grading dichiarati (altrimenti «consenso di esperti», L1) | Cochrane, Epistemonikos, WHO, NICE, USPSTF, AHRQ, Campbell (scienze sociali), JBI, INAHTA, ISS/SNLG, CDC/ECDC, EMA/AIFA/FDA, EFSA, IARC, IPCC, NASEM | Ogni revisione Cochrane è su PubMed con l'abstract completo, risultati numerici e spesso la certezza GRADE: cercala lì quando il sito è bloccato (`"Cochrane Database Syst Rev"[journal]`) |
 | **L1** | Letteratura primaria peer-reviewed indicizzata | PubMed/MEDLINE, PMC, Europe PMC, DOAJ, SciELO, ERIC, PEDro, PubPsych, PsycNet, NASA ADS, AGRIS | Il livello meglio servito dagli strumenti; usa i filtri `systematic review[pt]`, `meta-analysis[pt]`, `randomized controlled trial[pt]` |
 | **L2** | Registri di studi e protocolli | ClinicalTrials.gov (API v2), WHO ICTRP, EU CTIS, ISRCTN, PROSPERO, OSF | Il controllo più efficace contro l'outcome switching e gli studi mai pubblicati |
 | **L3** | Aggregatori e API bibliografiche | OpenAlex, Semantic Scholar, Crossref (metadati e ritrattazioni), Unpaywall, CORE, BASE, scite, Google Scholar (solo in supporto) | Mai fonte terminale: portano al documento primario |
@@ -122,12 +122,14 @@ La certezza è per outcome, non per studio: la stessa revisione può essere Alta
 Usa lo script per non fare aritmetica a mente e per rendere ogni calcolo tracciabile:
 
 ```
-python3 scripts/effetti.py relative --measure OR --value 0.31 --ci 0.20 0.48 --baseline 0.45
+python3 scripts/effetti.py relative --measure OR --value 0.31 --ci 0.20 0.48 --baseline 0.45   # fallimento del trattamento (evento indesiderato)
+python3 scripts/effetti.py relative --measure RR --value 1.20 --ci 1.05 1.37 --baseline 0.30 --event desirable   # remissione (evento desiderato)
 python3 scripts/effetti.py table --ei 128 --ni 419 --ec 100 --nc 423
+python3 scripts/effetti.py nnt --arr -0.15 --ci -0.25 -0.05
 python3 scripts/effetti.py smd --value 0.45
 ```
 
-Lo script vale per uno studio o per una tabella già aggregata dagli autori: sommare gli eventi di più studi non riproduce una meta-analisi.
+Senza `--event` lo script stampa entrambe le letture (evento indesiderato / desiderato): scegli quella giusta per l'outcome. Vale per uno studio o per una tabella già aggregata dagli autori: sommare gli eventi di più studi non riproduce una meta-analisi.
 
 ---
 
@@ -138,12 +140,12 @@ Ogni controllo ha uno strumento primario **meccanicamente interrogabile**; gli s
 | Controllo | Strumento primario | Riserva | Che cosa cerchi |
 |---|---|---|---|
 | Ritrattazione | Metadati PubMed: `article_types` contiene «Retracted Publication», «Expression of Concern», «Published Erratum»; collegamenti «Retraction in» / «Erratum in» | API Crossref (`api.crossref.org/works/<DOI>`, campi `update-to`/`updated-by`); Retraction Watch se raggiungibile | Articolo ritrattato, corretto o con dubbi formali |
-| Post-pubblicazione | «Comment in» nel record PubMed | PubPeer (app JavaScript, spesso non leggibile); scite | Segnalazioni su immagini, dati, statistiche |
+| Post-pubblicazione | Ricerca mirata via connettore: `"<parole del titolo>"[ti] AND (comment[pt] OR letter[pt])`; i collegamenti «Comment in» del record PubMed sono visibili solo sulla pagina web (WebFetch) o via E-utilities, **non nei metadati del connettore** | PubPeer (app JavaScript, spesso non leggibile); scite | Segnalazioni su immagini, dati, statistiche; lettere critiche |
 | Legittimità della rivista | Indicizzazione MEDLINE (il record esiste su PubMed) | DOAJ, SCImago | Peer review reale; segnali predatori |
 | Conflitti di interesse | Sezioni Funding / Competing interests del full text (PMC) | registro del trial (sponsor) | Chi ha finanziato, chi ha analizzato; allegiance in psicoterapia |
 | Corrispondenza col protocollo | API ClinicalTrials.gov v2 (`/api/v2/studies/<NCT>`), PROSPERO | pagina web del registro | Outcome primario, tempo, campione, data di registrazione |
 | Coerenza dei numeri | `scripts/effetti.py` e controllo manuale | — | Percentuali vs conteggi, stima dentro l'IC, totali |
-| Attualità | Data della ricerca dichiarata («searched to…»), «Update in», versione `.pubN`; RCT successivi con filtro data | — | Sintesi superate, linee guida > 5 anni, note regolatorie recenti |
+| Attualità | Data della ricerca dichiarata («searched to…»); versione `.pubN`; ricerca del titolo con `[ti]` ordinata per data per trovare aggiornamenti («Update in» non è esposto dal connettore); RCT successivi con filtro data | — | Sintesi superate, linee guida > 5 anni, note regolatorie recenti |
 
 Tre esiti, sempre con lo strumento: **superato**, **fallito** (non citare come evidenza; se lo citi perché è l'unico, dichiara il problema nel testo), **non verificato (strumento non accessibile)**. **Mai compilare l'esito di un controllo non eseguito**: scrivere «nessuna ritrattazione» senza aver interrogato nulla è la violazione più grave di questo protocollo, perché simula proprio il rigore che dovrebbe garantire. Un «non verificato» onesto vale più di dieci «superato» presunti.
 

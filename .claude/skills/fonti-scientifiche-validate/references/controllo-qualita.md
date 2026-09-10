@@ -42,7 +42,7 @@ Salta la Fase 4 solo per i documenti istituzionali di livello L0 (linee guida, r
   - «Retraction of Publication» → il record è la *notizia* di ritrattazione di un altro articolo.
   - «Expression of Concern» → dubbi formali non risolti: trattalo come fallito salvo motivazione esplicita.
   - «Published Erratum» / «Corrected and Republished Article» → correzione: leggi l'erratum prima di citare i numeri.
-- Nel record PubMed compaiono anche i collegamenti «Retraction in», «Erratum in», «Comment in», «Update in».
+- Nel record PubMed (pagina web) compaiono anche i collegamenti «Retraction in», «Erratum in», «Comment in», «Update in». **Il connettore MCP non li espone**: se la pagina web e le E-utilities non sono raggiungibili, cerca le notizie con una query mirata (`"<parole del titolo>"[ti] AND (retraction of publication[pt] OR published erratum[pt])`) e, in assenza di risultati, riporta «ritrattazioni: superato (article_types); notizie collegate non verificabili».
 
 **Procedura secondaria — API Crossref** (`https://api.crossref.org/works/<DOI>`): i campi `update-to` (nel record della notizia) e `updated-by` (nel record dell'articolo) elencano ritrattazioni e correzioni con data; Crossref integra i dati di Retraction Watch.
 
@@ -55,7 +55,7 @@ Salta la Fase 4 solo per i documenti istituzionali di livello L0 (linee guida, r
 ## 3. Segnalazioni post-pubblicazione
 
 - **PubPeer** (`pubpeer.com/search?q=<DOI>`): commenti su immagini duplicate, statistiche impossibili, dati incoerenti. È un'app JavaScript: senza browser di norma non si legge → esito «non verificato» con la causa.
-- **PubMed «Comment in»**: lettere all'editore e commenti indicizzati compaiono nel record: leggili quando esistono.
+- **PubMed «Comment in»**: lettere all'editore e commenti indicizzati compaiono nel record web, non nei metadati del connettore. Via connettore: `"<parole del titolo>"[ti] AND (comment[pt] OR letter[pt])`, oppure una ricerca sul tema con `letter[pt]` negli anni successivi: è così che si trovano le lettere critiche a una linea guida o a una meta-analisi.
 - **scite** (`scite.ai`): mostra quante citazioni successive *contraddicono* il lavoro; freemium.
 - Segnali che puoi valutare da solo, se hai il full text: percentuali impossibili con quel campione (es. 33,3% su 10 partecipanti non esiste), medie e deviazioni standard incompatibili con scale limitate, IC asimmetrici attorno alla stima su scala lineare, tabelle con totali che non tornano (§7).
 
@@ -129,7 +129,7 @@ Prima di trascrivere un numero, controlla che i numeri della fonte siano coerent
 
 **Revisione sistematica — AMSTAR 2, i 7 item critici**: (1) protocollo registrato prima dell'inizio; (2) ricerca completa (≥ 2 database, registri, letteratura grigia); (3) motivazione degli studi esclusi; (4) rischio di bias valutato per ogni studio; (5) metodi meta-analitici appropriati; (6) rischio di bias considerato nell'interpretazione; (7) bias di pubblicazione valutato. Due o più mancanze critiche → revisione di qualità «criticamente bassa»: la sua conclusione non vale più dei suoi studi.
 
-**Linea guida — AGREE II, domande chiave**: metodo di ricerca dell'evidenza dichiarato? Criteri di selezione e forza dell'evidenza espliciti? Collegamento visibile tra evidenza e raccomandazione? Revisione esterna? Procedura di aggiornamento? Conflitti d'interesse del panel dichiarati e gestiti? Indipendenza editoriale dal finanziatore?
+**Linea guida — AGREE II, domande chiave** (decidono anche il livello: L0 se le risposte sono sì, altrimenti «consenso di esperti»): metodo di ricerca dell'evidenza dichiarato? Criteri di selezione e forza dell'evidenza espliciti? Collegamento visibile tra evidenza e raccomandazione? Revisione esterna? Procedura di aggiornamento? Conflitti d'interesse del panel dichiarati e gestiti? Indipendenza editoriale dal finanziatore?
 
 **RCT dall'abstract — domande minime**: randomizzato? in cieco (chi)? placebo o confronto attivo? outcome primario dichiarato? ITT? dimensione campionaria e numero di eventi? durata del follow-up? registrazione?
 

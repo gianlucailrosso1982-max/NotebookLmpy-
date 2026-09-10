@@ -155,6 +155,10 @@ python3 scripts/effetti.py relative --measure OR --value 0.31 --ci 0.20 0.48 --b
 
 python3 scripts/effetti.py table --ei 128 --ni 419 --ec 100 --nc 423
 # → rischio 30,5% vs 23,6%; +6,9 pp [+0,9; +12,9]; RR 1,29; OR 1,42; NNTH 15
+
+python3 scripts/effetti.py relative --measure RR --value 1.20 --ci 1.05 1.37 --baseline 0.30 --event desirable
+# → per un evento DESIDERATO (remissione, risposta) il flag --event desirable fa leggere l'aumento come beneficio (NNTB);
+#   senza il flag lo script stampa entrambe le letture. `nnt` vuole --arr (differenza intervento − controllo) e --ci.
 #   L'abstract scrive «128/419 (31%) versus 100/423 (13%)»: 100/423 è 23,6%, non 13%. Segnala
 #   l'incoerenza, non scegliere. E ricorda: OR pooled della revisione = 1,58 (0,78–3,21): sommare
 #   gli eventi di più studi NON riproduce la meta-analisi.
