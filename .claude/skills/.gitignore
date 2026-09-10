@@ -1,2 +1,4 @@
 # spazi di lavoro delle valutazioni delle skill (output di test, non versionati)
 *-workspace/
+__pycache__/
+*.pyc
