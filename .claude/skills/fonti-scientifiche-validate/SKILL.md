@@ -1,6 +1,6 @@
 ---
 name: fonti-scientifiche-validate
-description: Instrada ogni ricerca web sulle fonti scientifiche ad accesso libero più autorevoli, ordinate per gerarchia, e assegna a ciascun dato un livello di certezza GRADE con la sua efficacia reale (dimensione dell'effetto, NNT, intervalli di confidenza). Usa questa skill ogni volta che l'utente chiede di verificare, documentare o approfondire un'affermazione fattuale, scientifica, clinica, psicologica, tecnica, statistica o di salute pubblica — quando chiede "cosa dice la scienza", "quali sono le prove", "è vero che", "fonti autorevoli", "evidenze scientifiche", "studi affidabili", "verifica questa affermazione", "quanto è efficace", oppure quando sta scrivendo un contenuto divulgativo, clinico, formativo o giornalistico che deve poggiare su fonti verificabili. Attivala anche in autonomia quando una risposta rischierebbe di presentare come certo un dato che in realtà ha basi deboli.
+description: Instrada ogni ricerca su affermazioni fattuali verso le fonti scientifiche ad accesso libero più autorevoli, in ordine gerarchico, e assegna a ciascun dato una certezza GRADE con la sua efficacia reale (effetto assoluto, NNT, intervalli di confidenza). Usa questa skill quando l'utente chiede di verificare o documentare un'affermazione scientifica, clinica, psicologica, statistica, nutrizionale o di salute pubblica — "cosa dice la scienza", "quali sono le prove", "è vero che", "fonti autorevoli", "quanto è efficace", "verifica questa affermazione" — o quando scrive contenuti divulgativi, clinici, formativi o giornalistici che devono poggiare su fonti verificabili. Attivala anche in autonomia quando una risposta rischierebbe di presentare come certo un dato con basi deboli. Non attivarla per opinioni, preferenze, quesiti di programmazione o fatti banali non contestati.
 ---
 
 # Fonti Scientifiche Validate — Protocollo di ricerca gerarchica e valutazione dell'efficacia reale
@@ -18,22 +18,39 @@ Terza domanda, quella che l'utente vuole davvero: **quanto conta questo effetto 
 
 ---
 
-## 2. Protocollo operativo in 6 fasi
+## 2. Protocollo operativo
+
+**Fase 0 — Triage di proporzionalità.**
+Prima di tutto, scegli la modalità e dichiarala nella risposta:
+
+- **Modalità rapida** — quesito singolo, non controverso, non destinato a pubblicazione (una curiosità, un fatto da confermare): una sola ricerca sul livello più alto pertinente, una fonte L0/L1 verificata, mini-scheda a 4 righe (affermazione, certezza, effetto assoluto, fonte con link). Tutte le regole ferme della sezione 7 restano valide.
+- **Protocollo completo** — quesito clinico o controverso, più affermazioni da verificare, o contenuto destinato a pubblicazione/divulgazione: tutte le fasi che seguono.
+
+Nel dubbio, chiedi o usa la modalità rapida dichiarando il limite.
 
 **Fase 1 — Formulare il quesito in forma strutturata.**
-Per quesiti clinici e comportamentali usa PICO: Popolazione, Intervento, Confronto, Outcome. Per quesiti non clinici, esplicita: fenomeno, contesto, misura, periodo. Se il quesito è vago, restringilo prima di cercare.
+Per quesiti clinici e comportamentali usa PICO: Popolazione, Intervento, Confronto, Outcome. Per quesiti non clinici, esplicita: fenomeno, contesto, misura, periodo. Se il quesito è vago, restringilo prima di cercare. **Traduci sempre il quesito in inglese** prima di interrogare le fonti: quasi tutte le banche dati della sezione 3 indicizzano in inglese, e una query in italiano ne dimezza il recupero.
 
 **Fase 2 — Discesa gerarchica.**
-Parti sempre dal livello più alto e scendi solo se non trovi risposta. Usa il parametro `allowed_domains` di WebSearch per vincolare la ricerca ai domini del livello che stai interrogando (elenco alla sezione 3). Non partire mai da una ricerca generica sul web aperto.
+Parti sempre dal livello più alto e scendi solo se non trovi risposta; per affermazioni controverse, cerca comunque conferma incrociata su almeno due fonti indipendenti. Usa il parametro `allowed_domains` di WebSearch per vincolare la ricerca ai domini del livello che stai interrogando (elenco alla sezione 3). Non partire mai da una ricerca generica sul web aperto. Due avvertenze tecniche:
 
-**Fase 3 — Recupero del testo.**
-Usa `WebFetch` sugli URL trovati. Se disponibili, privilegia i connettori/MCP attivi (PubMed, ClinicalTrials.gov, Consensus, ChEMBL, bioRxiv, Open Targets) rispetto allo scraping. Leggi almeno l'abstract completo e, quando accessibile, la sezione metodi e i risultati numerici. Non citare mai un lavoro di cui hai letto solo il titolo.
+- Il filtro `allowed_domains` opera sul dominio registrabile, non sul sottodominio esatto: vincolare a `pubmed.ncbi.nlm.nih.gov` può restituire anche altre proprietà `ncbi.nlm.nih.gov`. Controlla che ogni risultato appartenga davvero al livello che stai interrogando.
+- **Gli snippet dei risultati di ricerca servono a selezionare le fonti, mai a citarne i dati.** I riassunti restituiti dal motore contengono numeri ed effetti pre-digeriti: non sono lettura della fonte. Un numero è citabile solo dopo aver aperto il documento (Fase 3).
+
+**Fase 3 — Recupero del testo, con fallback a cascata.**
+Segui quest'ordine e fermati al primo canale che funziona:
+
+1. **Connettori/MCP attivi** (es. PubMed, Consensus, ClinicalTrials.gov, ChEMBL, bioRxiv, Open Targets — verifica quali esistono davvero nella sessione: spesso solo alcuni sono presenti).
+2. **`WebFetch` sugli URL trovati.** In ambienti con proxy di rete restrittivo molti domini scientifici risultano bloccati: un fetch fallito non è un errore tuo, è un limite dell'ambiente.
+3. **Se entrambi i canali falliscono**, il documento è *non letto*: puoi indicarlo come riferimento da approfondire, ma nessun suo dato è citabile e la scheda deve riportare «non verificato (accesso bloccato)». Non ripiegare mai sugli snippet della Fase 2 come surrogato di lettura.
+
+Leggi almeno l'abstract completo e, quando accessibile, la sezione metodi e i risultati numerici. Non citare mai un lavoro di cui hai letto solo il titolo o lo snippet.
 
 **Fase 4 — Controllo qualità obbligatorio.**
 Prima di citare qualunque studio, verifica: ritrattazioni, segnalazioni post-pubblicazione, natura della rivista, conflitti di interesse, finanziamento. Strumenti alla sezione 5. Salta questa fase solo per documenti istituzionali di livello L0.
 
 **Fase 5 — Valutazione GRADE.**
-Assegna a ogni affermazione un livello di certezza secondo lo schema della sezione 4, motivando ogni declassamento o rialzo.
+Ordine di preferenza: **(a)** se la fonte L0 riporta già un proprio giudizio GRADE (le tabelle Summary of Findings di Cochrane, il grado delle raccomandazioni nelle linee guida, il grado A–D di USPSTF), usa quello e citalo come tale; **(b)** solo in assenza di una sintesi già valutata, assegna tu un livello secondo lo schema della sezione 4, motivando ogni declassamento o rialzo ed etichettandolo esplicitamente come «valutazione indicativa, non un GRADE formale». Non giudicare domini che richiedono dati non letti: se non hai visto I², funnel plot o protocollo registrato, scrivi «non valutabile dai dati accessibili» invece di stimare.
 
 **Fase 6 — Restituzione strutturata.**
 Usa il formato della sezione 6. Dichiara esplicitamente ciò che non hai trovato o che resta incerto: l'assenza di evidenza è essa stessa un'informazione da riportare.
@@ -145,7 +162,7 @@ Blog divulgativi, siti commerciali, testate generaliste, social, contenuti gener
 | Caso clinico singolo | Molto basso | **Molto bassa** |
 | Studio in vitro / animale / modellistico | Pre-clinico | **Molto bassa** per conclusioni sull'uomo |
 | Opinione di esperto, consenso non sistematico | Base | **Molto bassa** |
-| Preprint (qualunque disegno) | — | Declassamento automatico di almeno un gradino |
+| Preprint (qualunque disegno) | — | Parte da **Bassa** (disegno sperimentale) o **Molto bassa** (osservazionale), coerentemente con la regola L5 |
 
 ### 4.2 Cinque motivi di declassamento (GRADE)
 
@@ -176,7 +193,7 @@ Abbassa di uno o due gradini per ciascuno:
 
 La certezza dice quanto ci fidiamo del numero. L'efficacia reale dice quanto quel numero conta. Riporta, quando disponibili:
 
-- **Effetto assoluto**, non solo relativo. "Riduce il rischio del 50%" è vuoto: da 2% a 1% è un beneficio piccolo, da 40% a 20% è enorme. Riporta sempre ARR (riduzione assoluta del rischio) accanto al RR/OR/HR.
+- **Effetto assoluto**, non solo relativo. "Riduce il rischio del 50%" è vuoto: da 2% a 1% è un beneficio piccolo, da 40% a 20% è enorme. Riporta sempre ARR (riduzione assoluta del rischio) accanto al RR/OR/HR. Se la fonte letta riporta solo l'effetto relativo e il rischio di base non è disponibile, scrivi «effetto assoluto non riportato nella fonte» — **non calcolarlo mai da assunzioni non dichiarate**.
 - **NNT / NNH** — quante persone bisogna trattare perché una ne tragga beneficio, e quante perché una subisca un danno.
 - **Intervallo di confidenza al 95%**, non solo la stima puntuale.
 - **Differenza minima clinicamente importante (MCID)** — l'effetto supera la soglia oltre la quale la persona se ne accorge davvero?
@@ -188,22 +205,30 @@ La certezza dice quanto ci fidiamo del numero. L'efficacia reale dice quanto que
 
 ## 5. Controllo qualità obbligatorio prima di citare
 
-| Controllo | Strumento | Che cosa cerchi |
-|---|---|---|
-| Ritrattazione | `retractiondatabase.org` (Retraction Watch) | Articolo ritrattato, corretto o con expression of concern |
-| Revisione post-pubblicazione | `pubpeer.com` | Segnalazioni su immagini duplicate, dati incoerenti, errori statistici |
-| Legittimità della rivista | `doaj.org`, `scimagojr.com` | Rivista indicizzata e con peer review reale; diffida di titoli assenti da DOAJ/Scopus e con tempi di pubblicazione lampo |
-| Conflitti di interesse | Sezione "Funding" e "Competing interests" del paper | Chi ha finanziato e chi ha analizzato i dati |
-| Corrispondenza col protocollo | `clinicaltrials.gov`, `crd.york.ac.uk/prospero` | Gli outcome pubblicati coincidono con quelli pre-registrati? |
-| Attualità | Data di pubblicazione e di ultimo aggiornamento | Una linea guida di 12 anni fa può essere superata |
+Ogni controllo ha uno strumento primario meccanicamente interrogabile e, dove esiste, uno di riserva. Priorità agli strumenti primari: quelli di riserva sono best effort (form o app JavaScript spesso non leggibili senza browser, o bloccati dai proxy di rete).
 
-Se un controllo fallisce, non citare quello studio. Se lo citi comunque perché è l'unico disponibile, dichiara il problema nel testo.
+| Controllo | Strumento primario | Riserva (best effort) | Che cosa cerchi |
+|---|---|---|---|
+| Ritrattazione | **Metadati PubMed**: il campo `article_types` riporta «Retracted Publication»; le notice di ritrattazione ed errata sono collegate al record | API Crossref (`api.crossref.org/works/<DOI>`, campi `update-to`/`updated-by`, includono i dati Retraction Watch); `retractiondatabase.org` solo se raggiungibile | Articolo ritrattato, corretto o con expression of concern |
+| Revisione post-pubblicazione | — | `pubpeer.com` (app JavaScript: spesso non interrogabile senza browser) | Segnalazioni su immagini duplicate, dati incoerenti, errori statistici |
+| Legittimità della rivista | Indicizzazione MEDLINE/PubMed della rivista | `doaj.org`, `scimagojr.com` | Rivista indicizzata e con peer review reale; diffida di titoli assenti da DOAJ/Scopus e con tempi di pubblicazione lampo |
+| Conflitti di interesse | Sezione "Funding" e "Competing interests" del full text (accessibile via PMC per gli articoli open access) | — | Chi ha finanziato e chi ha analizzato i dati |
+| Corrispondenza col protocollo | `clinicaltrials.gov`, `crd.york.ac.uk/prospero` (via MCP o fetch, se raggiungibili) | — | Gli outcome pubblicati coincidono con quelli pre-registrati? |
+| Attualità | Data di pubblicazione e di ultimo aggiornamento (nei metadati) | — | Una linea guida di 12 anni fa può essere superata |
+
+Tre esiti possibili per ciascun controllo, e vanno riportati con queste parole:
+
+- **superato** — il controllo è stato eseguito e non ha rilevato problemi;
+- **fallito** — il controllo ha rilevato un problema: non citare quello studio; se lo citi comunque perché è l'unico disponibile, dichiara il problema nel testo;
+- **non verificato (strumento non accessibile)** — il canale era bloccato o assente: esito legittimo e obbligatorio da dichiarare.
+
+**Mai compilare l'esito di un controllo non eseguito.** Scrivere «nessuna ritrattazione» senza aver interrogato lo strumento è la violazione più grave di questo protocollo: simula il rigore che dovrebbe garantire.
 
 ---
 
 ## 6. Formato di restituzione
 
-Per ogni affermazione rilevante, produci una scheda in questa forma. Usa prosa scorrevole per la sintesi e la tabella per il dettaglio; non trasformare tutto in elenchi puntati.
+Per ogni affermazione rilevante, produci una scheda in questa forma. Usa prosa scorrevole per la sintesi e la tabella per il dettaglio; non trasformare tutto in elenchi puntati. Se il testo da verificare contiene molte affermazioni, produci la scheda completa solo per le più importanti o le più fragili (di norma non oltre 5–7, in ordine di rilevanza) e raccogli le restanti in una tabella riassuntiva a una riga ciascuna (affermazione · certezza · fonte).
 
 ```
 ### [Affermazione in una riga]
@@ -221,23 +246,26 @@ Che cosa dicono i dati — [2-4 frasi in linguaggio chiaro, con i numeri assolut
 | Popolazione | [Chi è stato studiato] |
 | Motivo del livello | [Perché Alta/Moderata/Bassa: quale dominio GRADE è stato declassato e perché] |
 | Danni noti | [Effetti avversi riportati, o "non riportati nello studio"] |
-| Controlli | Ritrattazioni: [esito] · PubPeer: [esito] · Conflitti: [esito] |
+| Controlli | Ritrattazioni: [superato / fallito / non verificato] · Post-pubblicazione: [esito] · Conflitti: [esito] |
 | Link | [URL diretto] |
 ```
 
 Chiudi ogni ricerca con tre elementi:
 
-1. **Sintesi gerarchica** — la risposta complessiva, con il livello di certezza globale.
+1. **Sintesi gerarchica** — la risposta complessiva, con il livello di certezza globale. Se due fonti L0 divergono (due linee guida in disaccordo), riportale entrambe con data e metodologia: non sceglierne una in silenzio.
 2. **Che cosa non sappiamo** — lacune, questioni aperte, aree in cui l'evidenza manca o si contraddice. Questa sezione non è mai facoltativa.
 3. **Fonti** — elenco numerato con link cliccabili e livello gerarchico accanto a ciascuna.
+
+**Precedenza dei formati di citazione.** Alcuni MCP impongono propri obblighi di attribuzione (Consensus: riferimenti numerati inline e messaggio finale da riportare verbatim; PubMed: attribuzione esplicita con DOI linkato). Questi obblighi **si integrano** nella scheda — il DOI va nella riga Link, i riferimenti numerati nell'elenco Fonti, i messaggi obbligatori in coda alla risposta — e non sostituiscono né smontano il formato di questa sezione.
 
 ---
 
 ## 7. Regole ferme
 
-- **Mai citare ciò che non hai letto.** Nessun DOI, autore, anno o cifra inventati o ricostruiti a memoria. Se non hai potuto verificare, scrivilo.
+- **Mai citare ciò che non hai letto.** Nessun DOI, autore, anno o cifra inventati o ricostruiti a memoria. Gli snippet dei risultati di ricerca non sono lettura: un numero preso da uno snippet non è citabile. Se non hai potuto verificare, scrivilo.
+- **Mai compilare l'esito di un controllo non eseguito.** «Non verificato (strumento non accessibile)» è sempre un esito ammesso; un esito inventato non lo è mai.
 - **Mai spacciare un preprint per evidenza consolidata.**
-- **Mai un rischio relativo senza il corrispettivo assoluto.**
+- **Mai un rischio relativo senza il corrispettivo assoluto** quando la fonte lo riporta o lo rende ricavabile; se non lo è, dichiara «effetto assoluto non riportato nella fonte» invece di stimarlo.
 - **Mai una conclusione più forte di quanto la certezza consenta.** Con certezza bassa si scrive "alcuni studi suggeriscono", non "è dimostrato che".
 - **Mai omettere l'evidenza contraria.** Se esistono studi discordanti, vanno riportati con il loro peso.
 - **Mai confondere correlazione e causalità**, nemmeno per semplificare.
