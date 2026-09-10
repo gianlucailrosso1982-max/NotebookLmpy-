@@ -6,7 +6,7 @@ Skill riutilizzabili di Gianluca, versionate nel repo e attive quando si lavora 
 
 | Skill | A cosa serve |
 |---|---|
-| `fonti-scientifiche-validate` | Ricerca su fonti scientifiche autorevoli con livello GRADE ed efficacia reale |
+| `fonti-scientifiche-validate` | Ricerca su fonti scientifiche autorevoli con livello GRADE ed efficacia reale — skill multi-file: `SKILL.md` + `references/` + `scripts/effetti.py` |
 | `gestione-tono-genere-scrittura` | Costruisce e applica il profilo stilistico personale (scrivere "come me") |
 | `la-mia-mente` | Regole di lavoro sul vault "La mia Mente" (psicologia clinica, persuasione) |
 | `manuali-memorabili` | Progetta e impagina manuali/guide/corsi che si imparano e si ricordano |
@@ -14,6 +14,10 @@ Skill riutilizzabili di Gianluca, versionate nel repo e attive quando si lavora 
 | `notebooklm` | Comanda Google NotebookLM dal browser (notebook, fonti, audio/video overview) |
 | `persuasione-scientifica-strategica` | Scrittura persuasiva basata su evidenza (catene linguistiche + filtro scientifico) |
 | `ultra-mode` | Modalità di massima qualità, con interruttore interno sintetico ↔ approfondito |
+
+## Note sulla revisione (2026-09)
+
+- **`fonti-scientifiche-validate` ricostruita a divulgazione progressiva.** `SKILL.md` contiene il protocollo (triage rapido/completo, sei fasi con fallback a cascata, tre esiti per ogni controllo: superato / fallito / non verificato); otto file in `references/` approfondiscono gerarchia, strumenti, strategie di ricerca, GRADE ed effetti assoluti, controllo qualità, formato, esempi svolti con dati reali e glossario; `scripts/effetti.py` calcola RR/OR/ARR/NNT con IC 95% (validato sulla revisione Cochrane 2022 CD004976). Correzioni nate da un'analisi tecnica empirica: in ambienti con proxy restrittivo WebFetch è bloccato verso i domini scientifici, mentre i connettori MCP funzionano; il controllo delle ritrattazioni usa `article_types` dei metadati PubMed; i numeri degli snippet di ricerca non sono citabili.
 
 ## Note sulla revisione (2026-08)
 

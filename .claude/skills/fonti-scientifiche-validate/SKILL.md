@@ -5,279 +5,212 @@ description: Instrada ogni ricerca su affermazioni fattuali verso le fonti scien
 
 # Fonti Scientifiche Validate — Protocollo di ricerca gerarchica e valutazione dell'efficacia reale
 
+## Mappa della skill
+
+Questo file contiene il protocollo completo e basta da solo per la maggior parte dei quesiti. I file in `references/` approfondiscono; `scripts/effetti.py` fa i calcoli. Leggili quando la fase corrispondente lo richiede, non prima.
+
+| File | Quando leggerlo |
+|---|---|
+| `references/strategie-di-ricerca.md` | Fase 1–2: costruire o correggere una query; sintassi PubMed; set di domini; terminologia italiano→inglese |
+| `references/gerarchia-fonti.md` | Fase 2: scegliere da dove partire per tipo di quesito; alternative dello stesso livello; percorsi tematici (psicologia clinica, nutrizione, fonti italiane) |
+| `references/strumenti-e-fallback.md` | Fase 3 e ogni volta che uno strumento fallisce: cosa fanno davvero WebSearch, WebFetch, i connettori PubMed e Consensus; tabella dei fallback; budget |
+| `references/controllo-qualita.md` | Fase 4: procedure per ritrattazioni, conflitti, protocollo, coerenza dei numeri, attualità |
+| `references/grade-e-efficacia.md` | Fase 5–6: criteri operativi GRADE, lettura delle tabelle Summary of Findings, effetti assoluti, MCID, lessico calibrato |
+| `references/formato-output.md` | Fase 6: scheda completa campo per campo, mini-scheda, testi multi-affermazione, convivenza con i formati dei connettori |
+| `references/esempi-svolti.md` | Per vedere il protocollo applicato a casi reali (dati verificati), inclusa la modalità rapida e il caso «non verificabile» |
+| `references/glossario.md` | Quando devi spiegare un termine al lettore |
+| `scripts/effetti.py` | Ogni volta che trasformi un effetto relativo in assoluto, calcoli un NNT, o controlli che i numeri di una fonte tornino |
+
+---
+
 ## 1. Principio guida
 
-Due domande, sempre separate e mai confuse:
+Tre domande, sempre separate e mai confuse:
 
-1. **Quanto è autorevole la FONTE?** → Livello gerarchico (L0–L5).
-2. **Quanto è solido il DATO?** → Certezza GRADE (Alta / Moderata / Bassa / Molto bassa).
+1. **Quanto è autorevole la FONTE?** → Livello gerarchico L0–L5 (sezione 4).
+2. **Quanto è solido il DATO?** → Certezza GRADE: Alta, Moderata, Bassa, Molto bassa (sezione 5).
+3. **Quanto conta l'effetto nella realtà?** → Effetto assoluto, NNT, danni, rilevanza per la persona (sezione 6).
 
-Una fonte di livello massimo può ospitare un dato di certezza molto bassa. Una revisione Cochrane può concludere "evidenza molto incerta". Non promuovere mai un dato solo perché sta su PubMed o su una rivista prestigiosa.
+Una fonte di livello massimo può ospitare un dato di certezza molto bassa: una revisione Cochrane può concludere «evidenza molto incerta». Un risultato statisticamente significativo può essere irrilevante per chi lo riceve. Non promuovere mai un dato per la rivista che lo ospita, e non riportare mai un effetto relativo senza chiederti da quale rischio di base parte.
 
-Terza domanda, quella che l'utente vuole davvero: **quanto conta questo effetto nella realtà?** Un risultato statisticamente significativo può essere clinicamente irrilevante. Riporta sempre la dimensione dell'effetto in termini assoluti, non solo relativi.
+Questa skill esiste per impedire tre errori che un assistente commette con naturalezza: **citare con sicurezza numeri che non ha letto**, **presentare come verificato ciò che non ha verificato**, e **far sembrare grande un effetto piccolo**. Ogni regola qui sotto discende da uno di questi tre rischi.
 
 ---
 
-## 2. Protocollo operativo
+## 2. Fase 0 — Triage di proporzionalità
 
-**Fase 0 — Triage di proporzionalità.**
-Prima di tutto, scegli la modalità e dichiarala nella risposta:
+Scegli la modalità prima di cercare e dichiarala nella risposta.
 
-- **Modalità rapida** — quesito singolo, non controverso, non destinato a pubblicazione (una curiosità, un fatto da confermare): una sola ricerca sul livello più alto pertinente, una fonte L0/L1 verificata, mini-scheda a 4 righe (affermazione, certezza, effetto assoluto, fonte con link). Tutte le regole ferme della sezione 7 restano valide.
-- **Protocollo completo** — quesito clinico o controverso, più affermazioni da verificare, o contenuto destinato a pubblicazione/divulgazione: tutte le fasi che seguono.
+- **Modalità rapida** — quesito singolo, non controverso, non destinato a pubblicazione (una curiosità, un fatto da confermare): una o due ricerche sul livello più alto pertinente, una fonte L0/L1 aperta e letta, mini-scheda a quattro righe (affermazione, certezza, effetto, fonte con link, limiti). Le regole ferme valgono per intero: cambia il numero di fonti, non l'onestà.
+- **Protocollo completo** — quesito clinico o controverso, più affermazioni da verificare, contenuto destinato a pubblicazione o a decisioni: tutte le fasi che seguono.
 
-Nel dubbio, chiedi o usa la modalità rapida dichiarando il limite.
+Nel dubbio, usa la modalità rapida dichiarando il limite e offrendo il protocollo completo. Un protocollo completo per «il caffè disidrata?» spreca risorse; una modalità rapida per un capitolo clinico produce false sicurezze.
 
-**Fase 1 — Formulare il quesito in forma strutturata.**
-Per quesiti clinici e comportamentali usa PICO: Popolazione, Intervento, Confronto, Outcome. Per quesiti non clinici, esplicita: fenomeno, contesto, misura, periodo. Se il quesito è vago, restringilo prima di cercare. **Traduci sempre il quesito in inglese** prima di interrogare le fonti: quasi tutte le banche dati della sezione 3 indicizzano in inglese, e una query in italiano ne dimezza il recupero.
+---
+
+## 3. Protocollo operativo
+
+**Fase 1 — Formulare il quesito.**
+Per quesiti clinici e comportamentali usa PICO (Popolazione, Intervento, Confronto, Outcome); per gli altri esplicita fenomeno, contesto, misura, periodo. Se il quesito è vago, restringilo prima di cercare; se un'affermazione mescola due cose («previene e cura»), sdoppiala. **Traduci il quesito in inglese**: quasi tutte le fonti indicizzano in inglese, e una query in italiano ne dimezza il recupero. → `strategie-di-ricerca.md` §1, §9.
 
 **Fase 2 — Discesa gerarchica.**
-Parti sempre dal livello più alto e scendi solo se non trovi risposta; per affermazioni controverse, cerca comunque conferma incrociata su almeno due fonti indipendenti. Usa il parametro `allowed_domains` di WebSearch per vincolare la ricerca ai domini del livello che stai interrogando (elenco alla sezione 3). Non partire mai da una ricerca generica sul web aperto. Due avvertenze tecniche:
-
-- Il filtro `allowed_domains` opera sul dominio registrabile, non sul sottodominio esatto: vincolare a `pubmed.ncbi.nlm.nih.gov` può restituire anche altre proprietà `ncbi.nlm.nih.gov`. Controlla che ogni risultato appartenga davvero al livello che stai interrogando.
-- **Gli snippet dei risultati di ricerca servono a selezionare le fonti, mai a citarne i dati.** I riassunti restituiti dal motore contengono numeri ed effetti pre-digeriti: non sono lettura della fonte. Un numero è citabile solo dopo aver aperto il documento (Fase 3).
+Parti dal livello più alto pertinente per il tipo di quesito (tabella in `gerarchia-fonti.md` §1) e scendi solo se non trovi risposta; per affermazioni controverse cerca comunque conferma incrociata su due fonti indipendenti (non dello stesso gruppo di autori). Usa i connettori quando esistono e `allowed_domains` di WebSearch per vincolare la ricerca al livello che interroghi. Non partire mai dal web aperto. Due avvertenze verificate sul campo:
+- `allowed_domains` filtra sul dominio registrabile, non sul sottodominio: controlla che ogni risultato appartenga davvero al livello che volevi.
+- **Gli snippet dei risultati di ricerca servono a scegliere cosa aprire, mai a citare.** Contengono numeri pre-digeriti da un modello: non sono lettura della fonte. Un numero è citabile solo dopo la Fase 3.
+Se la prima query restituisce rumore, calibrala (§5 di `strategie-di-ricerca.md`) prima di concludere che non esistono sintesi.
 
 **Fase 3 — Recupero del testo, con fallback a cascata.**
-Segui quest'ordine e fermati al primo canale che funziona:
+Fermati al primo canale che funziona: (1) connettori MCP attivi in questa sessione (verificane l'esistenza: spesso ci sono solo PubMed e Consensus, e i connettori PubMed leggono anche gli abstract completi delle revisioni Cochrane); (2) WebFetch sull'URL della fonte; (3) se entrambi falliscono, il documento è **non letto**: puoi elencarlo come «da approfondire», ma nessun suo dato è citabile e i controlli risultano «non verificati (accesso bloccato)». In ambienti con proxy di rete restrittivo il fetch fallisce su quasi tutti i domini scientifici: non è un tuo errore, è un limite da dichiarare. Leggi almeno l'abstract completo e, quando accessibile, metodi, risultati numerici, finanziamento. Annota per ogni fonte cosa hai letto (abstract / full text). → `strumenti-e-fallback.md` §7.
 
-1. **Connettori/MCP attivi** (es. PubMed, Consensus, ClinicalTrials.gov, ChEMBL, bioRxiv, Open Targets — verifica quali esistono davvero nella sessione: spesso solo alcuni sono presenti).
-2. **`WebFetch` sugli URL trovati.** In ambienti con proxy di rete restrittivo molti domini scientifici risultano bloccati: un fetch fallito non è un errore tuo, è un limite dell'ambiente.
-3. **Se entrambi i canali falliscono**, il documento è *non letto*: puoi indicarlo come riferimento da approfondire, ma nessun suo dato è citabile e la scheda deve riportare «non verificato (accesso bloccato)». Non ripiegare mai sugli snippet della Fase 2 come surrogato di lettura.
+**Fase 4 — Controllo qualità prima di citare.**
+Per ogni studio: ritrattazioni, segnalazioni post-pubblicazione, legittimità della rivista, conflitti di interesse, corrispondenza col protocollo registrato, coerenza interna dei numeri, attualità. Ogni controllo ha tre esiti — **superato / fallito / non verificato (strumento non accessibile)** — e va riportato con lo strumento usato. Salta questa fase solo per documenti istituzionali di livello L0, per i quali restano attualità e conflitti. → sezione 7 e `controllo-qualita.md`.
 
-Leggi almeno l'abstract completo e, quando accessibile, la sezione metodi e i risultati numerici. Non citare mai un lavoro di cui hai letto solo il titolo o lo snippet.
+**Fase 5 — Certezza dell'evidenza.**
+Se la fonte L0 riporta già un giudizio GRADE (abstract e Summary of Findings Cochrane, gradi delle linee guida, gradi USPSTF), usa quello e citalo. Solo in assenza di una sintesi già valutata assegna un livello tu, con lo schema della sezione 5, etichettandolo «valutazione indicativa dell'assistente, non un GRADE formale» e scrivendo «non valutabile dai dati letti» per i domini che non hai potuto vedere. → `grade-e-efficacia.md` §5–6.
 
-**Fase 4 — Controllo qualità obbligatorio.**
-Prima di citare qualunque studio, verifica: ritrattazioni, segnalazioni post-pubblicazione, natura della rivista, conflitti di interesse, finanziamento. Strumenti alla sezione 5. Salta questa fase solo per documenti istituzionali di livello L0.
-
-**Fase 5 — Valutazione GRADE.**
-Ordine di preferenza: **(a)** se la fonte L0 riporta già un proprio giudizio GRADE (le tabelle Summary of Findings di Cochrane, il grado delle raccomandazioni nelle linee guida, il grado A–D di USPSTF), usa quello e citalo come tale; **(b)** solo in assenza di una sintesi già valutata, assegna tu un livello secondo lo schema della sezione 4, motivando ogni declassamento o rialzo ed etichettandolo esplicitamente come «valutazione indicativa, non un GRADE formale». Non giudicare domini che richiedono dati non letti: se non hai visto I², funnel plot o protocollo registrato, scrivi «non valutabile dai dati accessibili» invece di stimare.
-
-**Fase 6 — Restituzione strutturata.**
-Usa il formato della sezione 6. Dichiara esplicitamente ciò che non hai trovato o che resta incerto: l'assenza di evidenza è essa stessa un'informazione da riportare.
+**Fase 6 — Efficacia reale e restituzione.**
+Trasforma il relativo in assoluto (script), riporta NNT, IC, danni, outcome e popolazione; scegli le parole in base alla certezza; produci le schede e i quattro blocchi di chiusura (sezione 8). Dichiara ciò che non hai trovato: l'assenza di evidenza è un'informazione. → sezioni 6 e 8, `formato-output.md`.
 
 ---
 
-## 3. Gerarchia delle fonti ad accesso libero
+## 4. Gerarchia delle fonti ad accesso libero
 
-Ordinate per autorevolezza decrescente. Tutte consultabili gratuitamente; dove l'accesso ha condizioni, sono indicate.
+Il livello descrive la fonte, non il dato. Elenco completo, accessi reali, API e percorsi tematici in `gerarchia-fonti.md`.
 
-### L0 — Sintesi critiche, revisioni sistematiche e linee guida istituzionali
-Il vertice. Sono corpi di evidenza già valutati criticamente da panel indipendenti con metodologia dichiarata.
-
-| Fonte | Dominio | Ambito | Accesso |
+| Livello | Che cosa | Fonti principali | Nota operativa |
 |---|---|---|---|
-| Cochrane Library | `cochranelibrary.com` | Revisioni sistematiche in sanità | Abstract e Plain Language Summary sempre liberi; protocolli ed editoriali OA dal 2025; revisioni complete libere dopo 12 mesi; accesso nazionale gratuito in diversi paesi (Italia inclusa via provvedimenti nazionali/istituzionali) |
-| Epistemonikos | `epistemonikos.org` | Revisioni sistematiche multilingue, matrici di evidenza | Libero |
-| WHO — Linee guida e IRIS | `who.int`, `iris.who.int` | Salute globale, linee guida OMS | Libero |
-| NICE | `nice.org.uk` | Linee guida cliniche e HTA (UK) | Libero |
-| USPSTF | `uspreventiveservicestaskforce.org` | Raccomandazioni di prevenzione con grado A–D | Libero |
-| ECRI Guidelines Trust | `guidelines.ecri.org` | Repository di linee guida valutate (TRUST Scorecard) | Registrazione gratuita |
-| Guidelines International Network | `g-i-n.net` | Registro internazionale di linee guida | Libero |
-| Campbell Collaboration | `campbellcollaboration.org` | Revisioni sistematiche in scienze sociali, educazione, criminologia, welfare | Open access integrale |
-| JBI Evidence Synthesis | `jbi.global` | Revisioni sistematiche, evidenza qualitativa e assistenziale | Abstract liberi |
-| INAHTA HTA Database | `database.inahta.org` | Health Technology Assessment internazionale | Libero |
-| ISS / Sistema Nazionale Linee Guida | `iss.it`, `snlg.iss.it` | Linee guida italiane | Libero |
-| CDC | `cdc.gov` | Salute pubblica, epidemiologia, ACIP GRADE | Libero |
-| ECDC | `ecdc.europa.eu` | Epidemiologia europea | Libero |
-| EMA / AIFA / FDA | `ema.europa.eu`, `aifa.gov.it`, `fda.gov` | Valutazioni regolatorie sui farmaci, EPAR, foglietti illustrativi | Libero |
-| EFSA | `efsa.europa.eu` | Sicurezza alimentare, nutrizione, opinioni scientifiche | Libero |
-| IARC Monographs | `monographs.iarc.who.int` | Classificazione cancerogeni | Libero |
-| IPCC | `ipcc.ch` | Clima, rapporti di valutazione | Libero |
-| National Academies (NASEM) | `nap.nationalacademies.org` | Rapporti di consenso multidisciplinari | Libero |
+| **L0** | Sintesi critiche, revisioni sistematiche valutate, linee guida istituzionali | Cochrane, Epistemonikos, WHO, NICE, USPSTF, AHRQ, Campbell (scienze sociali), JBI, INAHTA, ISS/SNLG, CDC/ECDC, EMA/AIFA/FDA, EFSA, IARC, IPCC, NASEM | Ogni revisione Cochrane è su PubMed con l'abstract completo, risultati numerici e spesso la certezza GRADE: cercala lì quando il sito è bloccato (`"Cochrane Database Syst Rev"[journal]`) |
+| **L1** | Letteratura primaria peer-reviewed indicizzata | PubMed/MEDLINE, PMC, Europe PMC, DOAJ, SciELO, ERIC, PEDro, PubPsych, PsycNet, NASA ADS, AGRIS | Il livello meglio servito dagli strumenti; usa i filtri `systematic review[pt]`, `meta-analysis[pt]`, `randomized controlled trial[pt]` |
+| **L2** | Registri di studi e protocolli | ClinicalTrials.gov (API v2), WHO ICTRP, EU CTIS, ISRCTN, PROSPERO, OSF | Il controllo più efficace contro l'outcome switching e gli studi mai pubblicati |
+| **L3** | Aggregatori e API bibliografiche | OpenAlex, Semantic Scholar, Crossref (metadati e ritrattazioni), Unpaywall, CORE, BASE, scite, Google Scholar (solo in supporto) | Mai fonte terminale: portano al documento primario |
+| **L4** | Banche dati fattuali e statistiche ufficiali | WHO GHO, GBD/IHME, Eurostat, OECD, ISTAT, World Bank; NCBI, UniProt, PDB; NIST, CODATA; Copernicus, NOAA; Normattiva, EUR-Lex | Descrittive: forniscono numeri e rischi di base, non nessi causali né efficacia |
+| **L5** | Preprint e letteratura grigia | arXiv, bioRxiv, medRxiv, PsyArXiv, OSF, SSRN, NBER | Non peer-reviewed: etichetta «preprint», certezza da Bassa (sperimentale) o Molto bassa (osservazionale); verifica se esiste la versione pubblicata |
+| **Fuori** | Blog, testate generaliste, social, contenuti generati da IA, siti commerciali, Wikipedia | — | Solo per individuare uno studio, mai come fonte |
 
-### L1 — Letteratura primaria peer-reviewed indicizzata
+---
 
-| Fonte | Dominio | Ambito | Note |
+## 5. Certezza dell'evidenza (GRADE)
+
+**Punto di partenza per disegno**: revisione sistematica o meta-analisi di RCT e RCT singolo → **Alta**; coorte e caso-controllo → **Bassa**; trasversale, serie di casi, caso singolo, opinione di esperti, studi pre-clinici (per conclusioni sull'uomo) → **Molto bassa**; preprint → Bassa se sperimentale, Molto bassa se osservazionale; meta-analisi di studi osservazionali → Bassa (parte dal disegno degli studi inclusi).
+
+**Cinque motivi di declassamento** (uno o due gradini ciascuno): rischio di bias (randomizzazione o cecità assenti, abbandoni sbilanciati, outcome cambiati, analisi non ITT); incoerenza (stime in direzioni opposte, IC non sovrapposti, I² alto); indirettezza (popolazione, intervento, confronto o outcome diversi dal quesito; surrogati); imprecisione (pochi eventi, IC che include beneficio e danno rilevanti o attraversa la MCID); bias di pubblicazione (solo studi piccoli e positivi, funnel asimmetrico, evidenza solo sponsorizzata, studi registrati mai pubblicati). Criteri operativi in `grade-e-efficacia.md` §3.
+
+**Tre motivi di rialzo** (solo osservazionali): effetto grande (RR > 2 o < 0,5; > 5 o < 0,2 vale due gradini), gradiente dose-risposta, confondimento residuo che andrebbe contro l'effetto.
+
+| Simbolo | Livello | Significato | Lessico |
 |---|---|---|---|
-| PubMed / MEDLINE | `pubmed.ncbi.nlm.nih.gov` | Biomedicina, ~38M record | Indice + abstract liberi; usa i filtri "Systematic Review", "Meta-Analysis", "Randomized Controlled Trial" |
-| PubMed Central (PMC) | `pmc.ncbi.nlm.nih.gov` | Full text libero biomedico | |
-| Europe PMC | `europepmc.org` | 40M+ pubblicazioni e preprint, life sciences | Full text, API libera, collega dati e protocolli |
-| DOAJ | `doaj.org` | 20.000+ riviste OA verificate | Usalo anche come filtro anti-predatorio |
-| SciELO | `scielo.org` | America Latina, Iberia, Sudafrica | |
-| ERIC | `eric.ed.gov` | Educazione e didattica | |
-| NASA ADS | `ui.adsabs.harvard.edu` | Astronomia, astrofisica, fisica | |
-| AGRIS (FAO) | `agris.fao.org` | Agricoltura, alimentazione | |
-| PsycNet / APA (sezioni aperte) | `psycnet.apa.org` | Psicologia | Record e abstract; full text spesso a pagamento |
+| ⬤⬤⬤⬤ | Alta | L'effetto vero è molto probabilmente vicino alla stima | «riduce», «produce poca o nessuna differenza» |
+| ⬤⬤⬤◯ | Moderata | Probabilmente vicino, ma potrebbe differire | «probabilmente riduce» |
+| ⬤⬤◯◯ | Bassa | Fiducia limitata | «potrebbe ridurre», «l'evidenza suggerisce» |
+| ⬤◯◯◯ | Molto bassa | Fiducia minima | «non è chiaro se», «l'evidenza è molto incerta» |
 
-### L2 — Registri di studi e protocolli
-Servono per verificare se un risultato pubblicato corrisponde a quanto pre-registrato: è il controllo più efficace contro l'outcome switching e il publication bias.
-
-| Fonte | Dominio | Ambito |
-|---|---|---|
-| ClinicalTrials.gov | `clinicaltrials.gov` | Registro NIH degli studi clinici |
-| WHO ICTRP | `trialsearch.who.int` | Meta-registro globale degli studi |
-| EU CTIS / EudraCT | `euclinicaltrials.eu`, `clinicaltrialsregister.eu` | Registro europeo |
-| PROSPERO | `crd.york.ac.uk/prospero` | Registro delle revisioni sistematiche |
-| OSF Registries | `osf.io` | Pre-registrazioni multidisciplinari |
-
-### L3 — Aggregatori e motori bibliografici aperti
-Ottimi per scoprire e mappare la letteratura, **mai** come fonte terminale: portano sempre al documento primario.
-
-| Fonte | Dominio | Punto di forza |
-|---|---|---|
-| OpenAlex | `openalex.org` | Catalogo aperto di ~250M+ opere, API senza restrizioni, dati di citazione |
-| Semantic Scholar | `semanticscholar.org` | 200M+ paper, citazioni influenti, API gratuita |
-| CORE | `core.ac.uk` | Aggregatore di repository OA, full text |
-| BASE | `base-search.net` | Metadati OAI-PMH da repository accademici |
-| Lens.org | `lens.org` | Integra letteratura e brevetti |
-| Unpaywall / OA.Works | `unpaywall.org` | Trova la versione legalmente aperta di un DOI |
-| Google Scholar | `scholar.google.com` | Copertura ampia ma opaca e non riproducibile: usalo solo in supporto, mai come base di una ricerca sistematica |
-
-### L4 — Banche dati fattuali, statistiche ufficiali e dati strutturali
-Autorevoli e generalmente accurate, ma **descrittive**: forniscono numeri, non nessi causali. Non usarle per sostenere affermazioni di efficacia.
-
-**Statistiche e indicatori**
-`who.int/data/gho` (WHO Global Health Observatory) · `ec.europa.eu/eurostat` · `data-explorer.oecd.org` · `data.worldbank.org` · `data.un.org` · `dati.istat.it` · `data.europa.eu` · `ourworldindata.org` (secondario ma con fonti primarie tracciabili) · `ihmeuw.org` / `healthdata.org` (Global Burden of Disease)
-
-**Dati biologici e chimici**
-`ncbi.nlm.nih.gov` (GenBank, Gene, dbSNP, ClinVar) · `uniprot.org` · `rcsb.org` (Protein Data Bank) · `ensembl.org` · `ebi.ac.uk/chembl` · `pubchem.ncbi.nlm.nih.gov` · `platform.opentargets.org` · `gbif.org` (biodiversità)
-
-**Ambiente, spazio, geoscienze**
-`copernicus.eu` · `noaa.gov` · `usgs.gov` · `esa.int` · `nasa.gov`
-
-**Diritto e normativa**
-`eur-lex.europa.eu` · `normattiva.it` · `gazzettaufficiale.it`
-
-### L5 — Preprint e letteratura grigia
-**Non peer-reviewed.** Utili per la frontiera della ricerca, per verificare se un risultato è recente o contestato, mai come prova di efficacia. Ogni citazione da questo livello va etichettata esplicitamente come "preprint, non sottoposto a revisione paritaria" e la certezza GRADE parte da **Bassa** o **Molto bassa**.
-
-`arxiv.org` (fisica, matematica, informatica) · `biorxiv.org` (biologia) · `medrxiv.org` (medicina) · `chemrxiv.org` (chimica) · `psyarxiv.com` (psicologia) · `osf.io/preprints` · `socarxiv.org` · `eartharxiv.org` · `ssrn.com` · `researchsquare.com`
-
-### Fuori gerarchia — da non usare come fonte
-Blog divulgativi, siti commerciali, testate generaliste, social, contenuti generati da IA, aggregatori di notizie sanitarie, siti che vendono il prodotto di cui parlano. Possono servire solo per *individuare* uno studio, che va poi recuperato e verificato alla fonte primaria.
+La certezza è per outcome, non per studio: la stessa revisione può essere Alta sulla mortalità e Molto bassa sulla qualità di vita. La «certezza globale» della sintesi è quella dell'outcome che conta di più, non una media.
 
 ---
 
-## 4. Valutazione della certezza: GRADE + piramide delle evidenze
+## 6. Efficacia reale — cosa riportare sempre
 
-### 4.1 Punto di partenza secondo il disegno dello studio
+- **Effetto assoluto accanto al relativo.** «Riduce il rischio del 50%» è vuoto: da 2% a 1% è piccolo, da 40% a 20% è enorme. Riporta la differenza in punti percentuali o per 1000, con l'IC. Se la fonte dà solo il relativo e nessun rischio di base, scrivi «effetto assoluto non riportato nella fonte»; se vuoi un ordine di grandezza, calcolalo **dichiarando** il rischio di base assunto e la sua provenienza. Mai un numero assoluto senza origine.
+- **NNT e NNH**, con IC; se l'IC della differenza include lo zero, l'IC dell'NNT passa per l'infinito e va scritto così, non come intervallo finito.
+- **Intervallo di confidenza al 95%**, sempre; un IC stretto attorno al nullo è certezza di un effetto assente, non imprecisione.
+- **MCID**: l'effetto supera la soglia che la persona percepisce? Se non conosci la MCID dello strumento, dillo.
+- **Outcome reale o surrogato** (mortalità, ricadute, funzionamento vs marcatori di laboratorio, punteggi intermedi): segnala i surrogati e declassa per indirettezza se il quesito riguarda l'esito clinico.
+- **Durata del follow-up, popolazione, dose, contesto**, con i limiti di trasferibilità.
+- **Danni**, con frequenze assolute nei due gruppi; «non riportati nella fonte» quando è così. Un'analisi che riporta solo i benefici è incompleta per definizione.
+- **Coerenza dei numeri della fonte**: percentuali che tornano con i conteggi, stima dentro l'IC, NNT ≈ 1/differenza. Se non tornano, segnala la discrepanza senza scegliere.
 
-| Disegno | Posizione in piramide | Certezza iniziale |
-|---|---|---|
-| Revisione sistematica / meta-analisi di RCT | Vertice | **Alta** |
-| RCT singolo, ben condotto | Alto | **Alta** |
-| Studio di coorte prospettico | Medio | **Bassa** |
-| Studio caso-controllo | Medio-basso | **Bassa** |
-| Studio trasversale, serie di casi, registro | Basso | **Molto bassa** |
-| Caso clinico singolo | Molto basso | **Molto bassa** |
-| Studio in vitro / animale / modellistico | Pre-clinico | **Molto bassa** per conclusioni sull'uomo |
-| Opinione di esperto, consenso non sistematico | Base | **Molto bassa** |
-| Preprint (qualunque disegno) | — | Parte da **Bassa** (disegno sperimentale) o **Molto bassa** (osservazionale), coerentemente con la regola L5 |
-
-### 4.2 Cinque motivi di declassamento (GRADE)
-
-Abbassa di uno o due gradini per ciascuno:
-
-1. **Rischio di bias** — randomizzazione o cecità assenti o poco chiare, alto tasso di abbandoni, outcome cambiati rispetto al protocollo registrato, analisi non per intention-to-treat.
-2. **Incoerenza** — i risultati dei singoli studi divergono, eterogeneità elevata (I² alto), intervalli di confidenza che non si sovrappongono.
-3. **Indirettezza** — popolazione, intervento, confronto o outcome diversi da quelli della domanda; uso di outcome surrogati al posto di esiti che contano davvero.
-4. **Imprecisione** — campione piccolo, pochi eventi, intervallo di confidenza ampio che include sia beneficio sia danno.
-5. **Bias di pubblicazione** — solo studi piccoli e positivi, asimmetria del funnel plot, finanziamento esclusivo da parte di chi ha interesse al risultato, studi registrati mai pubblicati.
-
-### 4.3 Tre motivi di rialzo (solo per studi osservazionali)
-
-1. Effetto di grandezza notevole (RR > 2 o < 0,5 in modo consistente).
-2. Gradiente dose-risposta coerente.
-3. Tutti i fattori confondenti plausibili spingerebbero verso la nullità, eppure l'effetto persiste.
-
-### 4.4 Significato dei quattro livelli
-
-| Simbolo | Livello | Significato operativo |
-|---|---|---|
-| ⬤⬤⬤⬤ | **Alta** | L'effetto reale è molto probabilmente vicino alla stima. Ricerche future difficilmente la cambieranno. Puoi affermarlo. |
-| ⬤⬤⬤◯ | **Moderata** | L'effetto reale è probabilmente vicino alla stima, ma potrebbe differire in modo sostanziale. Puoi affermarlo con riserva esplicita. |
-| ⬤⬤◯◯ | **Bassa** | La fiducia nella stima è limitata: l'effetto reale può essere sostanzialmente diverso. Presenta come ipotesi, non come fatto. |
-| ⬤◯◯◯ | **Molto bassa** | Fiducia minima: la stima è molto incerta. Non usarla per orientare decisioni. Dichiara che non lo sappiamo. |
-
-### 4.5 Efficacia reale — cosa riportare sempre
-
-La certezza dice quanto ci fidiamo del numero. L'efficacia reale dice quanto quel numero conta. Riporta, quando disponibili:
-
-- **Effetto assoluto**, non solo relativo. "Riduce il rischio del 50%" è vuoto: da 2% a 1% è un beneficio piccolo, da 40% a 20% è enorme. Riporta sempre ARR (riduzione assoluta del rischio) accanto al RR/OR/HR. Se la fonte letta riporta solo l'effetto relativo e il rischio di base non è disponibile, scrivi «effetto assoluto non riportato nella fonte» — **non calcolarlo mai da assunzioni non dichiarate**.
-- **NNT / NNH** — quante persone bisogna trattare perché una ne tragga beneficio, e quante perché una subisca un danno.
-- **Intervallo di confidenza al 95%**, non solo la stima puntuale.
-- **Differenza minima clinicamente importante (MCID)** — l'effetto supera la soglia oltre la quale la persona se ne accorge davvero?
-- **Outcome misurato**: reale (mortalità, ricadute, qualità di vita) o surrogato (un marcatore di laboratorio)? Gli outcome surrogati vanno segnalati come tali.
-- **Durata del follow-up** e **popolazione studiata**, con esplicita indicazione dei limiti di trasferibilità.
-- **Danni e effetti avversi**, non solo benefici. Un'analisi che riporta solo i benefici è incompleta per definizione.
-
----
-
-## 5. Controllo qualità obbligatorio prima di citare
-
-Ogni controllo ha uno strumento primario meccanicamente interrogabile e, dove esiste, uno di riserva. Priorità agli strumenti primari: quelli di riserva sono best effort (form o app JavaScript spesso non leggibili senza browser, o bloccati dai proxy di rete).
-
-| Controllo | Strumento primario | Riserva (best effort) | Che cosa cerchi |
-|---|---|---|---|
-| Ritrattazione | **Metadati PubMed**: il campo `article_types` riporta «Retracted Publication»; le notice di ritrattazione ed errata sono collegate al record | API Crossref (`api.crossref.org/works/<DOI>`, campi `update-to`/`updated-by`, includono i dati Retraction Watch); `retractiondatabase.org` solo se raggiungibile | Articolo ritrattato, corretto o con expression of concern |
-| Revisione post-pubblicazione | — | `pubpeer.com` (app JavaScript: spesso non interrogabile senza browser) | Segnalazioni su immagini duplicate, dati incoerenti, errori statistici |
-| Legittimità della rivista | Indicizzazione MEDLINE/PubMed della rivista | `doaj.org`, `scimagojr.com` | Rivista indicizzata e con peer review reale; diffida di titoli assenti da DOAJ/Scopus e con tempi di pubblicazione lampo |
-| Conflitti di interesse | Sezione "Funding" e "Competing interests" del full text (accessibile via PMC per gli articoli open access) | — | Chi ha finanziato e chi ha analizzato i dati |
-| Corrispondenza col protocollo | `clinicaltrials.gov`, `crd.york.ac.uk/prospero` (via MCP o fetch, se raggiungibili) | — | Gli outcome pubblicati coincidono con quelli pre-registrati? |
-| Attualità | Data di pubblicazione e di ultimo aggiornamento (nei metadati) | — | Una linea guida di 12 anni fa può essere superata |
-
-Tre esiti possibili per ciascun controllo, e vanno riportati con queste parole:
-
-- **superato** — il controllo è stato eseguito e non ha rilevato problemi;
-- **fallito** — il controllo ha rilevato un problema: non citare quello studio; se lo citi comunque perché è l'unico disponibile, dichiara il problema nel testo;
-- **non verificato (strumento non accessibile)** — il canale era bloccato o assente: esito legittimo e obbligatorio da dichiarare.
-
-**Mai compilare l'esito di un controllo non eseguito.** Scrivere «nessuna ritrattazione» senza aver interrogato lo strumento è la violazione più grave di questo protocollo: simula il rigore che dovrebbe garantire.
-
----
-
-## 6. Formato di restituzione
-
-Per ogni affermazione rilevante, produci una scheda in questa forma. Usa prosa scorrevole per la sintesi e la tabella per il dettaglio; non trasformare tutto in elenchi puntati. Se il testo da verificare contiene molte affermazioni, produci la scheda completa solo per le più importanti o le più fragili (di norma non oltre 5–7, in ordine di rilevanza) e raccogli le restanti in una tabella riassuntiva a una riga ciascuna (affermazione · certezza · fonte).
+Usa lo script per non fare aritmetica a mente e per rendere ogni calcolo tracciabile:
 
 ```
-### [Affermazione in una riga]
+python3 scripts/effetti.py relative --measure OR --value 0.31 --ci 0.20 0.48 --baseline 0.45
+python3 scripts/effetti.py table --ei 128 --ni 419 --ec 100 --nc 423
+python3 scripts/effetti.py smd --value 0.45
+```
 
-**Certezza dell'evidenza: ⬤⬤⬤◯ MODERATA**
+Lo script vale per uno studio o per una tabella già aggregata dagli autori: sommare gli eventi di più studi non riproduce una meta-analisi.
 
-Che cosa dicono i dati — [2-4 frasi in linguaggio chiaro, con i numeri assoluti]
+---
+
+## 7. Controllo qualità prima di citare
+
+Ogni controllo ha uno strumento primario **meccanicamente interrogabile**; gli strumenti di riserva sono best effort. Procedure complete in `controllo-qualita.md`.
+
+| Controllo | Strumento primario | Riserva | Che cosa cerchi |
+|---|---|---|---|
+| Ritrattazione | Metadati PubMed: `article_types` contiene «Retracted Publication», «Expression of Concern», «Published Erratum»; collegamenti «Retraction in» / «Erratum in» | API Crossref (`api.crossref.org/works/<DOI>`, campi `update-to`/`updated-by`); Retraction Watch se raggiungibile | Articolo ritrattato, corretto o con dubbi formali |
+| Post-pubblicazione | «Comment in» nel record PubMed | PubPeer (app JavaScript, spesso non leggibile); scite | Segnalazioni su immagini, dati, statistiche |
+| Legittimità della rivista | Indicizzazione MEDLINE (il record esiste su PubMed) | DOAJ, SCImago | Peer review reale; segnali predatori |
+| Conflitti di interesse | Sezioni Funding / Competing interests del full text (PMC) | registro del trial (sponsor) | Chi ha finanziato, chi ha analizzato; allegiance in psicoterapia |
+| Corrispondenza col protocollo | API ClinicalTrials.gov v2 (`/api/v2/studies/<NCT>`), PROSPERO | pagina web del registro | Outcome primario, tempo, campione, data di registrazione |
+| Coerenza dei numeri | `scripts/effetti.py` e controllo manuale | — | Percentuali vs conteggi, stima dentro l'IC, totali |
+| Attualità | Data della ricerca dichiarata («searched to…»), «Update in», versione `.pubN`; RCT successivi con filtro data | — | Sintesi superate, linee guida > 5 anni, note regolatorie recenti |
+
+Tre esiti, sempre con lo strumento: **superato**, **fallito** (non citare come evidenza; se lo citi perché è l'unico, dichiara il problema nel testo), **non verificato (strumento non accessibile)**. **Mai compilare l'esito di un controllo non eseguito**: scrivere «nessuna ritrattazione» senza aver interrogato nulla è la violazione più grave di questo protocollo, perché simula proprio il rigore che dovrebbe garantire. Un «non verificato» onesto vale più di dieci «superato» presunti.
+
+---
+
+## 8. Formato di restituzione
+
+Prosa per la sintesi, tabella per il dettaglio. Una scheda per affermazione. Per testi con molte affermazioni: scheda completa per le 5–7 più rilevanti o fragili, tabella riassuntiva per le altre, tetto dichiarato. Guida campo per campo e mini-scheda in `formato-output.md`.
+
+```
+### [Affermazione in una riga, come la direbbe il lettore]
+
+**Certezza dell'evidenza: ⬤⬤⬤◯ MODERATA** — [dichiarata dalla fonte / valutazione indicativa dell'assistente]
+
+Che cosa dicono i dati — [2–4 frasi in linguaggio chiaro: prima l'effetto assoluto, poi il relativo,
+per chi e per quanto, e i danni; lessico calibrato sulla certezza]
 
 | Voce | Contenuto |
 |---|---|
-| Fonte | [Nome] — Livello [L0–L5] |
-| Disegno | [Meta-analisi di N RCT, n = totale partecipanti] |
-| Effetto | [RR/OR/HR con IC 95%] · [ARR] · [NNT] |
-| Outcome | [Reale o surrogato] · Follow-up [durata] |
-| Popolazione | [Chi è stato studiato] |
-| Motivo del livello | [Perché Alta/Moderata/Bassa: quale dominio GRADE è stato declassato e perché] |
-| Danni noti | [Effetti avversi riportati, o "non riportati nello studio"] |
-| Controlli | Ritrattazioni: [superato / fallito / non verificato] · Post-pubblicazione: [esito] · Conflitti: [esito] |
-| Link | [URL diretto] |
+| Fonte | [Autori, anno, rivista/ente] — Livello [L0–L5] — letto: [abstract / full text] |
+| Disegno | [Meta-analisi di k RCT, n = …; RCT; coorte…] |
+| Effetto relativo | [RR/OR/HR/SMD con IC 95%] |
+| Effetto assoluto | [controllo → intervento; differenza in pp o per 1000; NNT/NNH con IC] oppure «non riportato nella fonte» |
+| Outcome | [reale / surrogato] · strumento · follow-up |
+| Popolazione | [chi, dove, quanti; trasferibilità] |
+| Motivo del livello | [domini GRADE declassati/rialzati e perché; o i motivi dichiarati dalla fonte; «non valutabile dai dati letti» dove serve] |
+| Danni noti | [con numeri; NNH; o «non riportati nella fonte»] |
+| Controlli | Ritrattazioni: [esito (strumento)] · Post-pubblicazione: [esito] · Rivista: [esito] · Conflitti: [esito] · Protocollo: [esito] · Attualità: [esito] · Coerenza numeri: [esito] |
+| Link | [https://doi.org/…] · [PMID/PMC] · [URL della fonte L0] |
 ```
 
-Chiudi ogni ricerca con tre elementi:
+**Chiusura obbligatoria in quattro blocchi**: (1) **Sintesi gerarchica** con la certezza globale; se due fonti L0 divergono, riportale entrambe con data e metodo, senza sceglierne una in silenzio; (2) **Che cosa non sappiamo** — lacune, contraddizioni, e ciò che tu non hai potuto verificare: mai facoltativa; (3) **Fonti** numerate con livello, profondità di lettura e link (le fonti individuate ma non lette in un sotto-elenco «Da approfondire»); (4) **Metodo e limiti** — query eseguite con strumento e numero di risultati, letture, controlli eseguiti e non, blocchi incontrati. Sui temi clinici, una sola frase di responsabilità: le decisioni competono a un professionista che conosce il caso.
 
-1. **Sintesi gerarchica** — la risposta complessiva, con il livello di certezza globale. Se due fonti L0 divergono (due linee guida in disaccordo), riportale entrambe con data e metodologia: non sceglierne una in silenzio.
-2. **Che cosa non sappiamo** — lacune, questioni aperte, aree in cui l'evidenza manca o si contraddice. Questa sezione non è mai facoltativa.
-3. **Fonti** — elenco numerato con link cliccabili e livello gerarchico accanto a ciascuna.
-
-**Precedenza dei formati di citazione.** Alcuni MCP impongono propri obblighi di attribuzione (Consensus: riferimenti numerati inline e messaggio finale da riportare verbatim; PubMed: attribuzione esplicita con DOI linkato). Questi obblighi **si integrano** nella scheda — il DOI va nella riga Link, i riferimenti numerati nell'elenco Fonti, i messaggi obbligatori in coda alla risposta — e non sostituiscono né smontano il formato di questa sezione.
+**Formati dei connettori**: gli obblighi di attribuzione dei connettori (PubMed: «secondo PubMed» e DOI linkato per ogni articolo; Consensus: citazioni numerate e messaggio finale verbatim; WebSearch: elenco delle fonti) si integrano nella scheda — DOI nella riga Link, numeri nell'elenco Fonti, messaggi in coda — e non la sostituiscono. Una sola numerazione per tutte le fonti.
 
 ---
 
-## 7. Regole ferme
+## 9. Regole ferme
 
-- **Mai citare ciò che non hai letto.** Nessun DOI, autore, anno o cifra inventati o ricostruiti a memoria. Gli snippet dei risultati di ricerca non sono lettura: un numero preso da uno snippet non è citabile. Se non hai potuto verificare, scrivilo.
-- **Mai compilare l'esito di un controllo non eseguito.** «Non verificato (strumento non accessibile)» è sempre un esito ammesso; un esito inventato non lo è mai.
-- **Mai spacciare un preprint per evidenza consolidata.**
-- **Mai un rischio relativo senza il corrispettivo assoluto** quando la fonte lo riporta o lo rende ricavabile; se non lo è, dichiara «effetto assoluto non riportato nella fonte» invece di stimarlo.
-- **Mai una conclusione più forte di quanto la certezza consenta.** Con certezza bassa si scrive "alcuni studi suggeriscono", non "è dimostrato che".
-- **Mai omettere l'evidenza contraria.** Se esistono studi discordanti, vanno riportati con il loro peso.
-- **Mai confondere correlazione e causalità**, nemmeno per semplificare.
-- **Nessun consiglio clinico personalizzato.** Riporta l'evidenza e ricorda che le decisioni cliniche competono a un professionista che conosce il caso.
-- Se la ricerca non produce risultati di livello adeguato, dillo chiaramente invece di ripiegare su fonti deboli presentate come solide.
+- **Mai citare ciò che non hai letto.** Nessun DOI, autore, anno o cifra inventati o ricostruiti a memoria. Gli snippet non sono lettura. Se non hai potuto verificare, scrivilo.
+- **Mai compilare l'esito di un controllo non eseguito.** «Non verificato (strumento non accessibile)» è sempre ammesso; un esito inventato mai.
+- **Mai un rischio relativo senza il corrispettivo assoluto** quando la fonte lo riporta o lo rende ricavabile; altrimenti «effetto assoluto non riportato nella fonte», e nessuna stima da assunzioni non dichiarate.
+- **Mai spacciare un preprint per evidenza consolidata**, né un'analisi dello stesso gruppo per una replicazione indipendente.
+- **Mai una conclusione più forte di quanto la certezza consenta.** Con certezza bassa si scrive «alcuni studi suggeriscono», non «è dimostrato».
+- **Mai omettere l'evidenza contraria.** Cercala attivamente; se esiste, riportala con il suo peso.
+- **Mai confondere correlazione e causalità**, nemmeno per semplificare; con gli studi osservazionali ragiona con Bradford Hill e la triangolazione.
+- **Mai «non funziona» quando l'evidenza è assente**: l'assenza di evidenza non è evidenza di assenza.
+- **Nessun consiglio clinico personalizzato.** Riporta l'evidenza; le decisioni sul singolo caso competono a un professionista.
+- Se la ricerca non produce risultati di livello adeguato, dillo, invece di ripiegare su fonti deboli presentate come solide.
 
 ---
 
-## 8. Riferimenti metodologici
+## 10. Checklist prima di consegnare
 
-GRADE Working Group — sistema di valutazione della certezza dell'evidenza e della forza delle raccomandazioni (`gradeworkinggroup.org`, `gdt.gradepro.org/app/handbook/handbook.html`).
-Cochrane Handbook for Systematic Reviews of Interventions (`training.cochrane.org/handbook`).
-PRISMA 2020 per la rendicontazione delle revisioni sistematiche (`prisma-statement.org`).
-Risk of Bias 2 (RoB 2) e ROBINS-I per la valutazione del rischio di bias.
-AGREE II per la valutazione della qualità delle linee guida.
+1. Modalità dichiarata (rapida / completa)?
+2. Ogni numero viene da una fonte che ho aperto?
+3. Ogni relativo ha l'assoluto o la dicitura «non riportato nella fonte»?
+4. Certezza dichiarata con la sua origine (fonte / indicativa)?
+5. Lessico calibrato sulla certezza?
+6. Danni riportati o dichiarati non riportati?
+7. Riga Controlli con sette voci, ciascuna con esito e strumento, nessuna simulata?
+8. «Che cosa non sappiamo» presente e sostanziale?
+9. Fonti con livello, profondità di lettura e link; nessuna fonte non letta mescolata a quelle lette?
+10. «Metodo e limiti» sufficiente a rifare la ricerca?
+
+---
+
+## 11. Riferimenti metodologici
+
+GRADE Working Group — certezza dell'evidenza e forza delle raccomandazioni (`gradeworkinggroup.org`; GRADE Handbook, `gdt.gradepro.org/app/handbook/handbook.html`). Cochrane Handbook for Systematic Reviews of Interventions (`training.cochrane.org/handbook`), con le «informative statements» per il lessico calibrato. PRISMA 2020 (`prisma-statement.org`). RoB 2 e ROBINS-I per il rischio di bias; AMSTAR 2 per la qualità delle revisioni; AGREE II per le linee guida. Altman DG, «Confidence intervals for the number needed to treat», BMJ 1998, per l'IC dell'NNT. Bradford Hill A, «The environment and disease: association or causation?», 1965, per la causalità negli studi osservazionali.

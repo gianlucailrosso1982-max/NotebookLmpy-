@@ -1,0 +1,52 @@
+{
+  "skill_name": "fonti-scientifiche-validate",
+  "evals": [
+    {
+      "id": 1,
+      "name": "protocollo-completo-affermazione-clinica",
+      "prompt": "Sto scrivendo un articolo divulgativo per il blog del mio studio. Voglio scrivere che 'gli omega-3 riducono la depressione'. Verifica questa affermazione con fonti autorevoli e dimmi come dovrei formularla in modo onesto.",
+      "expected_output": "Modalità completa dichiarata; almeno una fonte L0/L1 aperta e letta (non solo snippet); scheda con certezza dichiarata e origine del giudizio; effetto assoluto o dicitura 'non riportato nella fonte'; danni; riga Controlli con esiti espliciti (superato/fallito/non verificato) e strumenti; sezione 'Che cosa non sappiamo'; Fonti con link e livello; nota 'Metodo e limiti'; proposta di formulazione calibrata sulla certezza.",
+      "files": [],
+      "assertions": [
+        "Dichiara esplicitamente la modalità (rapida o completa)",
+        "Contiene almeno una scheda con la riga 'Certezza dell'evidenza' e un livello GRADE",
+        "Riporta un effetto assoluto (differenza in pp, per 1000, NNT) oppure la dicitura esplicita 'non riportato nella fonte'",
+        "La riga Controlli usa solo gli esiti 'superato', 'fallito' o 'non verificato' e nomina lo strumento",
+        "Contiene la sezione 'Che cosa non sappiamo' con contenuto sostanziale",
+        "Ogni fonte citata ha un link (DOI o URL) e un livello L0–L5",
+        "Contiene una nota 'Metodo e limiti' con le query eseguite",
+        "Nessun numero citato proviene da uno snippet non aperto (il testo dichiara cosa è stato letto: abstract o full text)",
+        "Propone una riformulazione dell'affermazione con lessico calibrato sulla certezza"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "verifica-testo-multi-affermazione",
+      "prompt": "Ecco un paragrafo del mio manuale: 'La meditazione mindfulness riduce l'ansia del 60%, migliora la memoria di lavoro, abbassa la pressione arteriosa e previene le ricadute depressive meglio degli antidepressivi. Bastano 10 minuti al giorno per vedere risultati in due settimane.' Verifica ogni affermazione e dimmi quali reggono.",
+      "expected_output": "Estrazione e numerazione delle affermazioni; priorità dichiarata; schede complete per le più rilevanti/fragili e tabella riassuntiva per le altre con esiti sommari (confermata / con riserva / ridimensionare / smentita / non verificabile); il '60%' trattato come effetto relativo da ricondurre all'assoluto o da segnalare come non fondato; confronto con antidepressivi trattato con cautela; chiusura in quattro blocchi.",
+      "files": [],
+      "assertions": [
+        "Le affermazioni sono estratte e numerate singolarmente",
+        "Esiste una tabella riassuntiva o un elenco con un esito per ogni affermazione",
+        "Il '60%' viene esplicitamente messo in discussione come cifra relativa priva di rischio di base o come non supportata",
+        "Almeno una scheda completa con riga Controlli e Certezza",
+        "Il confronto 'meglio degli antidepressivi' non è confermato senza una fonte L0/L1 letta",
+        "Contiene 'Che cosa non sappiamo' e 'Metodo e limiti'"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "modalita-rapida-curiosita",
+      "prompt": "curiosità: è vero che leggere alla luce fioca rovina la vista?",
+      "expected_output": "Modalità rapida dichiarata; una fonte L0/L1 aperta (o dichiarazione onesta di non poter verificare); mini-scheda a quattro righe con certezza, dato, fonte con link, limiti; offerta del protocollo completo; nessun controllo simulato.",
+      "files": [],
+      "assertions": [
+        "Dichiara la modalità rapida",
+        "Risposta compatta: una mini-scheda, non più di due fonti",
+        "La certezza è dichiarata con la sua origine (indicativa o dalla fonte)",
+        "Nessuna riga Controlli compilata con esiti presunti: gli esiti non eseguiti sono 'non verificato'",
+        "Offre il passaggio al protocollo completo"
+      ]
+    }
+  ]
+}

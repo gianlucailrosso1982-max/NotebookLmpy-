@@ -11,6 +11,9 @@ Fonte: [Agent Skills — Claude Platform Docs](https://platform.claude.com/docs/
   nei pacchetti di upload.
 - `name` solo minuscole, numeri e trattini; **non può contenere "claude" o "anthropic"**. Le 8 skill sono già conformi.
 - Zip: la cartella della skill deve stare **alla radice** dell'archivio (non il solo `SKILL.md`).
+- Skill **multi-file** (`fonti-scientifiche-validate`, `notebooklm`): lo zip deve contenere l'intera cartella
+  (`SKILL.md`, `references/`, `scripts/`); i file di riferimento vengono letti su richiesta e lo script richiede
+  code execution (Python 3, sola libreria standard).
 
 ## Caricare su claude.ai
 
